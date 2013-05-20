@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "row">
+<div class = "span12">
+<form class = "form-horizontal">
+	<fieldset>
+		<legend>Track Workout</legend>
+		<div class = "contol-group">
+			<label class = "control-label">Exercise</label>
+		</div>
+		<div class = "controls">
+			<input type = "text">
+		</div>
+		<br>
+		<div class = "contol-group">
+			<label class = "control-label">Sets</label>
+		</div>
+		<div class = "controls">
+			<input type = "number">
+		</div>
+		<br>
+		<div class = "contol-group">
+			<label class = "control-label">Reps</label>
+		</div>
+		<div class = "controls">
+			<input type = "number">
+		</div>
+		<br>
+		<div class = "controls">
+			<button type = "submit" class = "btn">Submit</button>
+		</div>
+	</fieldset>
+</form>
+{% if exercise %}
+{% for e in exercise %}
+	{{e.id}}
+	{{e.exercise}}
+{% endfor %}
+{% endif %}
+</div>
+</div>
+{% endblock %}
