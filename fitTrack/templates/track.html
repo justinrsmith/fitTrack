@@ -3,14 +3,14 @@
 {% block content %}
 <div class = "row">
 <div class = "span12">
-<form class = "form-horizontal">
+<form class = "form-horizontal" action="{{ url_for('track') }}" method=post class=track>
 	<fieldset>
 		<legend>Track Workout</legend>
 		<div class = "contol-group">
 			<label class = "control-label">Exercise</label>
 		</div>
 		<div class = "controls">
-			<input type = "text">
+			<input type = "text" name = exercise>
 		</div>
 		<br>
 		<div class = "contol-group">
