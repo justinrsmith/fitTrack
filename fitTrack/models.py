@@ -13,10 +13,16 @@ class main(db.Model):
     
     id = db.Column(db.Integer(), primary_key=True)
     exercise = db.Column(db.String(25))
+    sets = db.Column(db.Integer())
+    reps = db.Column(db.Integer())
+    weight = db.Column(db.Integer())
 
-    def __init__(self,exercise):
+    def __init__(self, exercise, sets, reps, weight):
        # self.id = id
         self.exercise = exercise
+        self.sets = sets
+        self.reps = reps
+        self.weight = weight
 
     def __repr__(self):
     #    """The default way records are represented"""

@@ -12,7 +12,8 @@ def track():
    
     if request.method == 'POST':
     	print [request.form['exercise']]
-    	main = m.main(request.form['exercise'])
+    	main = m.main(request.form['exercise'], request.form['sets'], request.form[
+            'reps'], request.form['weight'])
     	m.db.session.add(main)
     	m.db.session.commit()
 
