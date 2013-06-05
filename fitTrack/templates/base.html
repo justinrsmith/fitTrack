@@ -4,14 +4,23 @@
 		<link type="text/css" rel = "stylesheet" href={{ url_for('static',filename='bootstrap/css/bootstrap.css') }}>
 		{% block head %}{% endblock %}
 	</head>
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			<ul class=flashes>
+			{% for message in messages %}
+				<li>{{ message }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	{% endwith %}
 	<body>
 	<div class="navbar navbar-fixed-top">
 		<div class = "navbar-inner">
 			<div class="container">
 				<ul class="nav">
 					<li class="active">
-					<li><a href={{ url_for('home') }}>Home</a></li>
-					<li><a href={{ url_for('track') }}>Track</a></li>
+					<li><a href=home>Home</a></li>
+					<li><a href=track>Track</a></li>
 				</ul>
 			</div>	
 		</div>

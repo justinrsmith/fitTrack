@@ -7,10 +7,25 @@
 	<fieldset>
 		<legend>Track Workout</legend>
 		<div class = "contol-group">
+			<label class = "control-label">Category</label>
+		</div>
+		<div class = "controls">
+			<select id="category" name="category">
+				{% for e in exercise %}
+					<option value="{{e.workout}}">{{e.category}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<br>
+		<div class = "contol-group">
 			<label class = "control-label">Exercise</label>
 		</div>
 		<div class = "controls">
-			<input type = "text" name = exercise>
+			<select id="exercise" name="exercise">
+				{% for e in exercise %}
+					<option value="{{e.workout}}">{{e.workout}}</option>
+				{% endfor %}
+			</select>
 		</div>
 		<br>
 		<div class = "contol-group">
@@ -39,10 +54,10 @@
 		</div>
 	</fieldset>
 </form>
-{% if exercise %}
-{% for e in exercise %}
-	{{e.id}}
-	{{e.exercise}}
+{% if workout %}
+{% for w in workout %}
+	{{w.id}}
+	{{w.exercise}}
 {% endfor %}
 {% endif %}
 </div>
