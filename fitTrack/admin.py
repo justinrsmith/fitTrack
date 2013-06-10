@@ -21,7 +21,7 @@ class AdminHome(AdminIndexView):
                         
 class exerciseAdmin(ModelView):
     name = 'Exercise'
-    # can_delete = False
+    can_delete = False
        
     def is_accessible(self):
         return True
@@ -33,5 +33,5 @@ class workoutAdmin(ModelView):
         return True                
                                                 
 admin = Admin(app)
-admin.add_view(exerciseAdmin(m.exercise, m.db, name='Exercise'))
-admin.add_view(workoutAdmin(m.workout, m.db, name='Workout'))
+admin.add_view(ModelView(m.Exercise, m.db.session))
+admin.add_view(ModelView(m.Workout, m.db.session))
