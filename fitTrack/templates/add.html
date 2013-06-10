@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+div class = "row">
+<div class = "span12">
+<form class = "form-horizontal" action="{{ url_for('add') }}" method=post class=track>
+	<fieldset>
+		<legend>Track Workout</legend>
+		<div class = "contol-group">
+			<label class = "control-label">Category</label>
+		</div>
+		<div class = "controls">
+			<input type = "text" name = category>
+		</div>
+		<br>
+		<div class = "contol-group">
+			<label class = "control-label">Workout</label>
+		</div>
+		<div class = "controls">
+			<input type = "text" name = workout>
+		</div>
+		<br>
+		<div class = "controls">
+			<button type = "submit" class = "btn">Submit</button>
+		</div>
+	</fieldset>
+</form>
+</div>
+
+{% endblock %}

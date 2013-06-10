@@ -52,7 +52,7 @@ class user(db.Model):
 
 class exercise(db.Model):
 
-    __tablenane__ = 'exercise'
+    #__tablenane__ = 'exercise'
     id = db.Column(db.Integer(), primary_key=True)
     category = db.Column(db.String(30))
     workout = db.Column(db.String(30))

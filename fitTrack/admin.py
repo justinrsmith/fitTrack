@@ -11,21 +11,27 @@ from wtforms.fields import SelectField
 from flask import g
 
 class AdminHome(AdminIndexView):
-        @expose('/')
-        def index(self):
-                return self.render('admin/index.html', perms=g.identity.provides)
+    @expose('/')
+    def index(self):
+        return self.render('admin/index.html', perms=g.identity.provides)
                 
-        def is_accessible(self):
-                if g.identity.can(permissions.admin_access):
-                        return True
+    def is_accessible(self):
+        if g.identity.can(permissions.admin_access):
+            return True
                         
 class exerciseAdmin(ModelView):
-        name = 'Exercise'
-       # can_delete = False
+    name = 'Exercise'
+    # can_delete = False
        
-        def is_accessible(self):
-                return True
-                
+    def is_accessible(self):
+        return True
+
+class workoutAdmin(ModelView):
+    name = 'Workout'
+
+    def is_accessible(self):
+        return True                
                                                 
 admin = Admin(app)
 admin.add_view(exerciseAdmin(m.exercise, m.db, name='Exercise'))
+admin.add_view(workoutAdmin(m.workout, m.db, name='Workout'))

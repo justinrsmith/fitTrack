@@ -1,6 +1,16 @@
-from flask import render_template, request, redirect, flash, url_for, session
+from flask import render_template, request, redirect, flash, url_for, session, g
 from fitTrack import app
 import models as m
+
+currUser = 0
+
+@app.before_request
+
+def something():
+
+	u = 1
+	if u:
+		g.user = u
 
 def login():
 	"""Handle logging in of users"""
@@ -23,15 +33,22 @@ def login():
 	#		error = 'Invalid password'
 		else:
 			session['logged_in'] = True
+			session['user_id'] = 1
+		#	if session['user_id']:
+		#		user = 1
+		#	else:
+		#		user = 0
 			flash('You were logged in')
 
+		#	g.user = user
+		#	print g.user
 			return redirect(url_for('home'))
 
 	return render_template('login.html')
 
 def home():
     """Home page"""
-
+    print g.user
     return render_template('home.html')
 
 
@@ -51,3 +68,16 @@ def track():
     return render_template('track.html',
     	workout=workout,
     	exercise=exercise)
+
+def add_exercise():
+	"""
+	Add user specific/created exercise to DB
+	"""
+
+	if request.method == 'POST':
+		newExercise = m.exercise(request.form['category'], 
+			request.form['workout'], g.user)
+		m.db.session.add(newExercise)
+		m.db.session.commit()
+
+	return render_template('add.html')
