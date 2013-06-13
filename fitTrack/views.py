@@ -1,60 +1,60 @@
-from flask import render_template, request, redirect, flash, url_for, session, g
+from flask import render_template, request, redirect, flash, url_for, session, g, abort
 from fitTrack import app
 import models as m
 
-currUser = 0
+def auth(form):
+
+	if 'email' in request.form:
+		u = m.User.query.filter_by(email = form['email']).first()
+
+		if u:
+			session['user'] = u.id
 
 @app.before_request
-
 def something():
 
-	u = 1
-	if u:
-		g.user = u
+	if not session.has_key('user'):
+		return redirect(url_for('login'))
+	else:
+		g.user = session['user']
+
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html'), 404
 
 def login():
 	"""Handle logging in of users"""
 	
-	#if request.method == 'POST':
-	#	print 'hi'
-
 	if request.method == 'POST':
-		print request.form['email']
-		user = m.user.query.filter_by(email = request.form['email'])#, 
-		#	password=request.form['password']))
+		user = m.User.query.filter_by(email = request.form['email']).first() 
 
-		#email = user.first().email
-		#password = user.first().password
-		
-		if user.first() is None:
+		if user is None:
 			error = 'Invalid Email'
 			flash('Invalid credentials', error)
-	#	elif not password:
-	#		error = 'Invalid password'
+			session['logged_in'] = False
 		else:
 			session['logged_in'] = True
-			session['user_id'] = 1
-		#	if session['user_id']:
-		#		user = 1
-		#	else:
-		#		user = 0
+			session['user_id'] = user.id
 			flash('You were logged in')
 
-		#	g.user = user
-		#	print g.user
 			return redirect(url_for('home'))
 
 	return render_template('login.html')
 
 def home():
     """Home page"""
-    print g.user
+    if session['logged_in'] == False:
+    	abort(401)
+   
     return render_template('home.html')
 
 
 def track():
     """Gather exercise details, insert into DB"""
-   
+    
+    if session['logged_in'] == False:
+    	abort(401)
+
     if request.method == 'POST':
     	workout = m.workout(request.form['exercise'], request.form['sets'], request.form[
             'reps'], request.form['weight'], request.form[
@@ -62,8 +62,8 @@ def track():
     	m.db.session.add(workout)
     	m.db.session.commit()
 
-    workout = m.workout.query.all()
-    exercise = m.exercise.query.all()
+    workout = m.Workout.query.all()
+    exercise = m.Exercise.query.all()
 
     return render_template('track.html',
     	workout=workout,
@@ -75,9 +75,19 @@ def add_exercise():
 	"""
 
 	if request.method == 'POST':
-		newExercise = m.exercise(request.form['category'], 
+		newExercise = m.Exercise(request.form['category'], 
 			request.form['workout'], g.user)
 		m.db.session.add(newExercise)
 		m.db.session.commit()
 
 	return render_template('add.html')
+
+def me():
+	"""
+	User summary info
+	"""
+
+	if session['logged_in'] == False:
+		abort(401)
+
+	return render_template('me.html')
