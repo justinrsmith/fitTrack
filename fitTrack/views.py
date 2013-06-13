@@ -9,18 +9,23 @@ def auth(form):
 
 		if u:
 			session['user'] = u.id
+			print session['user']
+			return True
 
+	return False
+	
 @app.before_request
 def something():
 
 	if not session.has_key('user'):
 		return redirect(url_for('login'))
+		#pass
 	else:
 		g.user = session['user']
 
-@app.errorhandler(404)
-def page_not_found(e):
-	return render_template('404.html'), 404
+#@app.errorhandler(404)
+#def page_not_found(e):
+#	return render_template('404.html'), 404
 
 def login():
 	"""Handle logging in of users"""
@@ -44,9 +49,12 @@ def login():
 def home():
     """Home page"""
     if session['logged_in'] == False:
-    	abort(401)
-   
-    return render_template('home.html')
+    	abort(404)
+    else:
+   		
+   		#print g.user
+   		print 'am i here?'
+		return render_template('home.html')
 
 
 def track():

@@ -30,8 +30,15 @@ class workoutAdmin(ModelView):
     name = 'Workout'
 
     def is_accessible(self):
-        return True                
+        return True            
+
+class userAdmin(ModelView):
+	name = 'User'
+	
+	def is_accessible(self):
+		return True
                                                 
 admin = Admin(app)
-admin.add_view(ModelView(m.Exercise, m.db.session))
-admin.add_view(ModelView(m.Workout, m.db.session))
+admin.add_view(exerciseAdmin(m.Exercise, m.db.session))
+admin.add_view(workoutAdmin(m.Workout, m.db.session))
+admin.add_view(userAdmin(m.User, m.db.session))

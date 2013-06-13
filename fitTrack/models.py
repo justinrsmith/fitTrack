@@ -3,10 +3,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 from sqlalchemy.orm.interfaces import MapperExtension
 from sqlalchemy import and_
+from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 
 db = SQLAlchemy(app)
 
-class workout(db.Model):
+class Workout(db.Model):
     """The class/table for excercise data
 
     id int
@@ -34,7 +35,7 @@ class workout(db.Model):
 
         return self.exercise
 
-class user(db.Model):
+class User(db.Model):
     """The class/table for user data
 
     id int
@@ -50,7 +51,11 @@ class user(db.Model):
         self.email = email
         self.password = password
 
-class exercise(db.Model):
+    def __repr__(self):
+
+        return id
+
+class Exercise(db.Model):
 
     #__tablenane__ = 'exercise'
     id = db.Column(db.Integer(), primary_key=True)
@@ -63,3 +68,4 @@ class exercise(db.Model):
         self.category = category
         self.workout = workout
         self.userid = userid
+		

@@ -4,16 +4,21 @@
 		<link type="text/css" rel = "stylesheet" href={{ url_for('static',filename='bootstrap/css/bootstrap.css') }}>
 		{% block head %}{% endblock %}
 	</head>
-	{% with messages = get_flashed_messages() %}
-		{% if messages %}
-			<ul class=flashes>
-			{% for message in messages %}
-				<li>{{ message }}</li>
-			{% endfor %}
-			</ul>
-		{% endif %}
-	{% endwith %}
 	<body>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+			<div id="messages">
+				<div class="container">
+					{% for category, message in messages %}
+						<div class="alert fade in alert-{{ category }}">
+							<a class="close" data-dismiss="alert" href="#">&times;</a>	
+							{{ message|safe}}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+		{% endwith %}	
 	<div class="navbar navbar-fixed-top">
 		<div class = "navbar-inner">
 			<div class="container">
@@ -21,13 +26,28 @@
 					<li class="active">
 					<li><a href=home>Home</a></li>
 					<li><a href=track>Track</a></li>
+					<li><a href=me>Me</a></li>
 				</ul>
 			</div>	
 		</div>
 	</div>
-	<div class = "container"
+	<div class = "container">
 			{% block content %}
 			{% endblock %}	
 	</div>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+			<div id="messages">
+				<div class="container">
+					{% for category, message in messages %}
+						<div class="alert fade in alert-{{ category }}">
+							<a class="close" data-dismiss="alert" href="#">&times;</a>	
+							{{ message|safe}}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+		{% endwith %}	
 	</body>
 </html>
