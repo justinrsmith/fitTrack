@@ -21,7 +21,6 @@ class AdminHome(AdminIndexView):
                         
 class exerciseAdmin(ModelView):
     name = 'Exercise'
-    can_delete = False
        
     def is_accessible(self):
         return True

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "span6">
+			<form class = "form-horizontal" action="{{ url_for('login') }}" method=post class=track>
+			<fieldset>
+				<legend>Create a Login</legend>
+					<div class = "contol-group">
+						<label class = "control-label">Email</label>
+					</div>
+					<div class = "controls">
+						<input type = "text" name = email id = "email">
+					</div>
+					<br>
+					<div class = "contol-group">
+						<label class = "control-label">Password</label>
+					</div>
+					<div class = "controls">
+						<input type = "text" name = password>
+					</div>
+					<br>
+					<div class = "controls">
+						<button type = "submit" class = "btn">Submit</button>
+					</div>
+			</fieldset>
+		</form>
+</div>
+{% endblock %}

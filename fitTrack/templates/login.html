@@ -1,30 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class = "row">
-<div class = "span12">
-<form class = "form-horizontal" action="{{ url_for('login') }}" method=post class=track>
-	<fieldset>
-		<legend>Login</legend>
-		<div class = "contol-group">
-			<label class = "control-label">Email</label>
-		</div>
-		<div class = "controls">
-			<input type = "text" name = email id = email>
-		</div>
-		<br>
-		<div class = "contol-group">
-			<label class = "control-label">Password</label>
-		</div>
-		<div class = "controls">
-			<input type = "text" name = password>
-		</div>
-		<br>
-		<div class = "controls">
-			<button type = "submit" class = "btn">Submit</button>
-		</div>
-	</fieldset>
-</form>
-</div>
-</div>
+<script language="javascript" type="text/javascript">
+function btn_onclick() {
+	window.location.href = "{{ url_for('create') }}";
+}
+</script>
+		<form class = "form-horizontal" action="{{ url_for('login') }}" method=post class=track>
+			<fieldset>
+				<legend>Login</legend>
+					<div class = "contol-group">
+						<label class = "control-label">Email</label>
+					</div>
+					<div class = "controls">
+						<input type = "text" name = email id = "email">
+					</div>
+					<br>
+					<div class = "contol-group">
+						<label class = "control-label">Password</label>
+					</div>
+					<div class = "controls">
+						<input type = "text" name = password>
+					</div>
+					<br>
+					<div class = "controls">
+						<button type = "submit" class = "btn">Submit</button>
+					</div>
+			</fieldset>
+		</form>
+		<div class = "span6">
+		<form class = "form-horizontal" action="{{ url_for('create') }}" method=post class=track>
+		<fieldset>
+			<legend>Text</legend>
+				New to fitTrack? Enter an email to create a login.
+				<div class = "control-group">
+					<label class = "control-label">Email</label>
+				</div>
+				<div class = "controls">
+					<input type = "text" name = newEmail id = "newEmail">
+				</div>
+				<br>
+				<div class = "controls">
+					<button type = "button" class = "btn" onClick="return btn_onclick()">Create</button>
+				</div>
+				</fieldset>
+		</form>
+	</div>
 {% endblock %}

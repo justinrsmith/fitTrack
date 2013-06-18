@@ -228,6 +228,7 @@ body {
   line-height: 20px;
   color: #333333;
   background-color: #ffffff;
+  padding: 40px;
 }
 
 a {
@@ -1963,13 +1964,14 @@ legend + .control-group {
   float: left;
   width: 160px;
   padding-top: 5px;
-  text-align: right;
+  text-align: left;
 }
 
 .form-horizontal .controls {
+  text-align:;
   *display: inline-block;
   *padding-left: 20px;
-  margin-left: 180px;
+  margin-left: 0px;
   *margin-left: 0;
 }
 

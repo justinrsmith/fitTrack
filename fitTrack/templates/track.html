@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+
 <div class = "row">
 <div class = "span12">
 <form class = "form-horizontal" action="{{ url_for('track') }}" method=post class=track>
@@ -9,6 +11,7 @@
 		<div class = "contol-group">
 			<label class = "control-label">Category</label>
 		</div>
+		{% if exercise %}
 		<div class = "controls">
 			<select id="category" name="category">
 				{% for e in exercise %}
@@ -24,11 +27,12 @@
 		</div>
 		<div class = "controls">
 			<select id="exercise" name="exercise">
-				{% for e in exercise %}
-					<option value="{{e.workout}}">{{e.workout}}</option>
+				{% for x in exercise %}
+					<option value="{{x.workout}}">{{x.workout}}</option>
 				{% endfor %}
 			</select>
 		</div>
+		{% endif %}
 		<br>
 		<div class = "contol-group">
 			<label class = "control-label">Sets</label>
@@ -56,12 +60,7 @@
 		</div>
 	</fieldset>
 </form>
-{% if workout %}
-{% for w in workout %}
-	{{w.id}}
-	{{w.exercise}}
-{% endfor %}
-{% endif %}
+
 </div>
 </div>
 {% endblock %}

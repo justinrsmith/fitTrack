@@ -22,14 +22,19 @@ class Workout(db.Model):
     reps = db.Column(db.Integer())
     weight = db.Column(db.Integer())
     category = db.Column(db.String(30))
+    userid = db.Column(db.Integer())
+    logtime = db.Column(db.DateTime)
 
-    def __init__(self, exercise, sets, reps, weight, category):
+    def __init__(self, exercise, sets, reps, weight, category, userid,\
+        logtime):
 
         self.exercise = exercise
         self.sets = sets
         self.reps = reps
         self.weight = weight
         self.category = category
+        self.userid = userid
+        self.logtime = logtime
 
     def __repr__(self):
 

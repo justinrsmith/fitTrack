@@ -1,5 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-some info
+<div class="container">
+
+<div class = "span8">
+	<table class = "table table-bordered table-striped table-hover">
+		<h3>Recent Activity</h3>
+		<th><h6>Category</th></h6>
+		<th><h6>Exercise</th></h6>
+		<th><h6>Sets</th></h6>
+		<th><h6>Reps</th></h6>
+		<th><h6>Weight</th></h6>
+			{% if workout %}
+			{% for w in workout %}
+				<tr><td>{{w.category}}</td>
+				<td>{{w.exercise}}</td>
+				<td>{{w.sets}}</td>
+				<td>{{w.reps}}</td>
+				<td>{{w.weight}}</td>
+				</td></tr>
+
+		{% endfor %}
+		{% endif %}
+	</table>
+</div>
+</div>
 {% endblock %}
