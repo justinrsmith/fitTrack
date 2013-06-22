@@ -13,7 +13,7 @@
 		margin-left: auto;
 		margin-right: auto;
 		width: 700px;
-		height: 300px;
+		height: 350px;
 		border-radius: 3px;
 		background-color: white;
 		border: 1px solid #c4c4c4;
@@ -90,42 +90,26 @@
 
 <div id="login_container">
 
-	<form class = "login" action="{{ url_for('create') }}" method=post class=track>
+	<form class = "login" action="{{ url_for('login') }}" method=post class=track>
 			
 					<div class = "controls">
-						<input class="field"; type = "text" placeholder="First Name" name = firstName id = "firstName">
+						<input class="field"; type = "text" placeholder="Fist Name" name = email id = "first_name">
 					</div>
-                    
 					<div class = "controls">
-						<input class="field2"; type = "text" placeholder="Last Name" name = lastName id = "lastName">
+						<input class="field2"; type = "text" placeholder="Last Name" name = email id = "last_name">
 					</div>
-                    
                     <div class = "controls">
-						<input class="field"; type = "text" placeholder="Age" name = age id = "age">
+						<input class="field"; type = "text" placeholder="Email" name = email id = "email">
 					</div>
-                    
                     <div class = "controls">
-						<input class="field2"; type = "text" placeholder="City" name = city id = "city">
+						<input class="field2"; type = "password" placeholder="Password" name = email id = "password">
 					</div>
-                    
-                    <div class = "controls">
-						<input class="field"; type = "text" placeholder="State" name = state id = "state">
-					</div>
-                    
-                    <div class = "controls">
-						<input class="field2"; type = "text" placeholder="Email" name = email id = "email">
-					</div>
-                    
-                    <div class = "controls">
-						<input class="field"; type = "password" placeholder="Password" name = password id = "password">
-					</div>
-                    
                     <br />
 					<div class = "controls">
 						<button type = "submit" class = "btn">CREATE ACCOUNT</button>
 					</div>
 			
-	</form>
+		</form>
         
         
 

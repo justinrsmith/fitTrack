@@ -7,6 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 
 db = SQLAlchemy(app)
 
+
 class Workout(db.Model):
     """The class/table for excercise data
 
@@ -40,6 +41,7 @@ class Workout(db.Model):
 
         return self.exercise
 
+
 class User(db.Model):
     """The class/table for user data
 
@@ -50,15 +52,27 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(40))
     password = db.Column(db.String(16))
+    firstName = db.Column(db.String(50))
+    lastName = db.Column(db.String(50))
+    age = db.Column(db.Integer())
+    city = db.Column(db.String(30))
+    state = db.Column(db.String(2))
 
-    def __init__(self, email, password):
+    def __init__(self, email, password, firstName, lastName,
+        age, city, state):
 
         self.email = email
         self.password = password
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+        self.city = city
+        self.state = state
 
     def __repr__(self):
 
         return id
+
 
 class Exercise(db.Model):
 

@@ -3,6 +3,8 @@ from fitTrack import app
 import models as m
 import json
 from datetime import datetime
+import hashlib
+
 
 def auth(form):
 
@@ -16,6 +18,7 @@ def auth(form):
 
 	return False
 
+
 @app.before_request
 def something():
 
@@ -27,15 +30,19 @@ def something():
 		pass
 		#return redirect(login_url)
 
-	g.user = session['user_id']
+	if not request.path == url_for('create'):
+		g.user = session['user_id']
+
 
 def login():
 	"""Handle logging in of users"""
 
 	session['logged_in'] = False
 	if request.method == 'POST':
+
+		pw = hashConvert(request.form['password'])
 		user = m.User.query.filter_by(email = request.form['email'])\
-		.filter_by(password = request.form['password']).first() 
+		.filter_by(password = pw).first() 
 		#print session['logged_in']
 		if user is None:
 			error = 'Invalid Email'
@@ -46,9 +53,10 @@ def login():
 			session['user_id'] = user.id
 			flash('You were logged in')
 
-			return redirect(url_for('home'))
+			return redirect(url_for('track'))
 	
 	return render_template('login.html')
+
 
 def logout():
 
@@ -61,22 +69,25 @@ def create():
 	User created login
 	"""
 
-	#print request.form['newEmail']
-	#if request.method == 'POST':
-	#	email = request.form['newEmail']
+	salt = 'gnarlysaltd00d'
+
+	if request.method == 'POST':
+		newUser = m.User(request.form['email'], request.form['password'],
+			request.form['firstName'], request.form['lastName'],
+			request.form['age'], request.form['city'], request.form['state'])
+		m.db.session.add(newUser)
+		m.db.session.commit()
+
 	return render_template('create.html')
 
 
 def home():
     """Home page"""
-    #print session['logged_in']
-    print g.user
+
     if session['logged_in'] == False:
     	abort(404)
     else:
-   		
-   		#print g.user
-   		print 'am i here?'
+   		print g.user
 		return render_template('home.html')
 
 
@@ -102,6 +113,7 @@ def track():
     	workout=workout,
     	exercise=exercise)
 
+
 def add_exercise():
 	"""
 	Add user specific/created exercise to DB
@@ -115,12 +127,12 @@ def add_exercise():
 
 	return render_template('add.html')
 
+
 def me():
 	"""
 	User summary info
 	"""
-	print 'me'
-	print session['logged_in']
+
 	if session['logged_in'] == False:
 		abort(401)
 	else:
@@ -128,3 +140,8 @@ def me():
 
 	return render_template('me.html',
 		workout=workout)
+
+def hashConvert(pwIn):
+
+	salt = '1337h4x0rz'
+	return hashlib.md5(salt + pwIn).hexdigest()
