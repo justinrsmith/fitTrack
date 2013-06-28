@@ -1,135 +1,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
- <style>
- 	* {margin: 0; padding: 0;}
-	
-	body {background-color: #f4f1ee;}
-	
-	#login_container {
-		margin-top: 100px;
-		margin-left: auto;
-		margin-right: auto;
-		width: 700px;
-		height: 300px;
-		border-radius: 3px;
-		background-color: white;
-		border: 1px solid #c4c4c4;
-	}
-	
-	.login {
-		float: left;
-		width: 600px;
-		margin-left: 50px;
-		margin-top: 25px;
-	}
-	
-	#login-create-account {
-		float: left;
-		width: 300px;
-		height: auto;
-		margin-left: 25px;
-		margin-top: 35px;
-	}
-	
-	.btn {
-		float: left;
-		background-color: #0072c6;
-		border: 0;
-		width: 600px;
-		height: 41px;
-		margin-top: 50px;
-		color: white;
-		cursor: pointer;
-		clear: both;
-	}
-	
-	.field {
-		float: left;
-		width: 280px;
-		height: 38px;
-		border: 1px solid #b3b3b3;
-	}
- 
- .field2 {
-		float: left;
-		width: 280px;
-		height: 38px;
-		border: 1px solid #b3b3b3;
-		margin-left: 35px;
-	}
- 
-	h1 {
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 18pt;
-		color: #7a7a7a;
-	}
-	
-	.fp {
-		margin-left: 130px;
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 12pt;
-		text-transform: uppercase;
-		color: #7a7a7a;
-		text-decoration: none;
-	}
-	
-	.blue {
-		color: #0072c6;
-		text-decoration: none;
-	}
-
- 	
- </style>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>fitTrack - Login</title>
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
+	<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
 </head>
 
 <body>
+<div class="top_bar"></div>
 
-<div id="login_container">
+<div id="signup_container">
 
-	<form class = "login" action="{{ url_for('create') }}" method=post class=track>
+	<form class="signup_area" action="{{ url_for('login') }}" method=post class=track>
 			
-					<div class = "controls">
-						<input class="field"; type = "text" placeholder="First Name" name = firstName id = "firstName">
-					</div>
+		<div class="field_holder">
+        	<label>First Name</label>
+			<input class="field" type="text" placeholder="First Name" name = email id = "email">
+		</div>
                     
-					<div class = "controls">
-						<input class="field2"; type = "text" placeholder="Last Name" name = lastName id = "lastName">
-					</div>
+		<div class="field_holder">
+        	<label>Last Name</label>
+			<input class="field" type = "text" placeholder="Last Name" name = password>
+		</div>
+        
+        <div class="field_holder">
+        	<label>Age</label>
+			<input class="field" type = "text" placeholder="Age" name = password>
+		</div>
+        
+        <div class="field_holder">
+        	<label>Location</label>
+			<input class="field" type = "text" placeholder="City, State" name = password>
+		</div>
+        
+        <div class="field_holder">
+        	<label>Password</label>
+			<input class="field" type = "password" placeholder="Password" name = password>
+		</div>
+        
+        <div class="field_holder">
+        	<label>Confirm Password</label>
+			<input class="field" type = "password" placeholder="Password" name = password>
+		</div>
                     
-                    <div class = "controls">
-						<input class="field"; type = "text" placeholder="Age" name = age id = "age">
-					</div>
-                    
-                    <div class = "controls">
-						<input class="field2"; type = "text" placeholder="City" name = city id = "city">
-					</div>
-                    
-                    <div class = "controls">
-						<input class="field"; type = "text" placeholder="State" name = state id = "state">
-					</div>
-                    
-                    <div class = "controls">
-						<input class="field2"; type = "text" placeholder="Email" name = email id = "email">
-					</div>
-                    
-                    <div class = "controls">
-						<input class="field"; type = "password" placeholder="Password" name = password id = "password">
-					</div>
-                    
-                    <br />
-					<div class = "controls">
-						<button type = "submit" class = "btn">CREATE ACCOUNT</button>
-					</div>
+		<div class="submit_holder">
+		<button type="submit" class="btn">Sign Up</button>
+		</div>
 			
 	</form>
-        
+
         
 
-</div><!--Close Login Container-->
+</div><!--Close Signup Container-->
+
+<div id="footer">
+	<p id="copyright">&copy; 2013 fitTrack | Version 0.01</p>
+	<p id="links">
+    <a href="https://github.com/justinrsmith/fitTrack">GitHub</a>
+    </p>
+</div>
+
+
 
 </body>
 </html>

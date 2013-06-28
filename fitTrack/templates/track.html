@@ -3,190 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>fitTrack - Track</title>
- <style>
- 	* {margin: 0; padding: 0;}
-	
-	body {background-color: #f4f1ee;}
-	
-	#login_container {
-		margin-top: 100px;
-		margin-left: auto;
-		margin-right: auto;
-		width: 700px;
-		height: 250px;
-		border-radius: 3px;
-		background-color: white;
-		border: 1px solid #c4c4c4;
-	}
-	
-	.login {
-		float: left;
-		width: 300px;
-		margin-left: 25px;
-		margin-top: 25px;
-	}
-	
-	#login-create-account {
-		float: left;
-		width: 300px;
-		height: auto;
-		margin-left: 25px;
-		margin-top: 35px;
-	}
-	
-	.btn {
-		background-color: #0072c6;
-		border: 0;
-		width: 300px;
-		height: 41px;
-		color: white;
-		cursor: pointer;
-		font-weight: bold;
-	}
-	
-	.btn:hover {
-		background-color: #068df1;
-		border: 0;
-		width: 300px;
-		height: 41px;
-		color: white;
-		cursor: pointer;
-		font-weight: bold;
-	}
-	
-	.field {
-		width: 298px;
-		height: 38px;
-		border: 1px solid #b3b3b3;
-	}
- 
-	h1 {
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 18pt;
-		color: #7a7a7a;
-	}
-	
-	.fp {
-		margin-left: 130px;
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 12pt;
-		text-transform: uppercase;
-		color: #7a7a7a;
-		text-decoration: none;
-	}
-	
-	.blue {
-		color: #0072c6;
-		text-decoration: none;
-	}
+<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
+<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
 
-
-/*Other*/
-.top_bar {
-	position: fixed;
-	height: 50px;
-	background-color: #0072c6;
-	border-bottom: 1px solid #015491;
-	top: 0;
-	width:100%;
-}
-
-#navigation {
-  position: fixed;
-  top: 0;
-  width: 1080px;
-  color: #ffffff;
-  height: 35px;
-  background-color: #0072c6;
-  z-index: 100;
-  padding-top: 15px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14pt;
-  text-transform: uppercase;
-  border-bottom: 1px solid #015491;
-  list-style: none;
-}
-
-#navigation li {
-	display: inline;
-}
-
-
-
-#navigation a {
-	font-size: 14pt;
-	padding-left: 15px;
-	padding-right: 15px;
-	color: white;
-	text-decoration: none;
-	font-weight: normal;
-}
-
-#navigation a:hover {
-	color: #e7ba72;
-	transition: color 0.25s ease-in-out 0s;
-}
-
-#navigation a.selected {
-	color: #e7ba72;
-}
-
-#main-container {
-	margin-left: auto;
-	margin-right: auto;
-	width: 960px;
-	height: auto;
-	overflow: hidden;
-}
-
-.track-form {
-	float: left;
-	margin-top: 70px;
-	width: 400px;
-	height: auto;
-}
-
-#track-info {
-	float: left;
-	width: 400px;
-	height: auto;
-	margin-left: 100px;
-	margin-top: 70px;
-}
-
-.heading {
-	font-weight: bold;
-}
-
-.icon-plus {
-  background-position: -408px -96px;
-}
-
-.styled-select select {
-   background: white;
-   padding: 8px 8px 8px 0;
-   line-height: 1;
-   border: 0;
-   border-radius: 0;
-   width: 298px;
-	height: 38px;
-	border: 1px solid #b3b3b3;
-   -webkit-appearance: none;
-   
-}
-
-h2 {
-		font-family: Arial, Helvetica, sans-serif;
-		font-size: 18pt;
-		color: #7a7a7a;
-}
-
-.definition {
-	width: 350px;
-	margin-bottom: 15px;
-}
- 	
- </style>
 
 </head>
 
@@ -194,67 +13,55 @@ h2 {
 
 <div class="top_bar"></div>
 
-<div id="main-container">
+<div id="track_page_main-container">
     	<ul id="navigation">
-		<li><a class="selected" href="track">Track</a></li>
-		</li><a href="me">Me</a></li>
-		<li><a href="logout">Logout</a></li>
+			<li><a class="selected" href="track">Track</a></li>
+			<li><a href="me">Me</a></li>
+			<li class="right"><a href="logout">Logout</a></li>
         </ul>
         
         
-        <form class = "track-form" action="{{ url_for('track') }}" method=post class=track>
-		<h1>Track Your Workout</h1>
+        <div class="section_header">
+        	<h1>Track Your Workout</h1>
+        </div>
+        <form id="track_container" action="{{ url_for('track') }}" method=post class=track>
         
-		<div class = "contol-group">
-			<label class="heading">Category</label>
-		</div>
-		{% if exercise %}
-        
-		<div class = "styled-select">
+		<div class="field_holder">
+			<label>Category</label>
 			<select id="category" name="category">
 				{% for e in exercise %}
 					<option value="{{e.workout}}">{{e.category}}</option>
 				{% endfor %}
 			</select>
-			<a href="{{ url_for('add') }}">Add Category</a>
+			<a id="yep" href="{{ url_for('add') }}">Add</a>
 		</div>
 
-		<br>
-		<div class = "contol-group">
-			<label class="heading">Exercise</label>
-		</div>
-		<div class = "styled-select">
-			<select class="field" id="exercise" name="exercise">
+		<div class ="field_holder">
+			<label>Exercise</label>
+			<select id="exercise" name="exercise">
 				{% for x in exercise %}
 					<option value="{{x.workout}}">{{x.workout}}</option>
 				{% endfor %}
 			</select>
 		</div>
-		{% endif %}
-		<br>
-		<div class = "contol-group">
-			<label class="heading">Sets</label>
-		</div>
-		<div class = "controls">
+        
+		<div class ="field_holder">
+			<label>Sets</label>
 			<input class="field" type="number" placeholder="Enter The Number of Sets You Completed" name = sets>
 		</div>
-		<br>
-		<div class = "contol-group">
-			<label class="heading">Reps</label>
-		</div>
-		<div class = "controls">
+        
+		<div class ="field_holder">
+			<label>Reps</label>
 			<input class="field" type="number" placeholder="Enter The Number of Reps You Did" name = reps>
 		</div>
-		<br>
-		<div class = "contol-group">
-			<label class="heading">Weight</label>
-		</div>
-		<div class = "controls">
+        
+		<div class ="field_holder">
+			<label>Weight</label>
 			<input class="field" type="number" placeholder="Enter The Amount of Weight You Did" name = weight>
 		</div>
-		<br>
-		<div class = "controls">
-			<button type = "submit" class = "btn">Submit</button>
+
+		<div class="submit_holder">
+			<button type="submit" class = "btn">Submit</button>
 		</div>
 </form>
 
