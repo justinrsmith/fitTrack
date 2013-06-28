@@ -1,15 +1,18 @@
-from flask import render_template, request, redirect, flash, url_for, session, g, abort
+from flask import render_template, request, redirect, flash, url_for, jsonify, session, g, abort, make_response
 from fitTrack import app
 import models as m
 import json
 from datetime import datetime
 import hashlib
+from fitTrack.forms import WorkoutChoiceForm
+
+from flask.views import MethodView
 
 
 def auth(form):
 
 	if 'email' in request.form:
-		u = m.User.query.filter_by(email = form['email']).first()
+		u = m.user.query.filter_by(email = form['email']).first()
 
 		if u:
 			session['user'] = u.id
@@ -41,7 +44,7 @@ def login():
 	if request.method == 'POST':
 
 		pw = hashConvert(request.form['password'])
-		user = m.User.query.filter_by(email = request.form['email'])\
+		user = m.user.query.filter_by(email = request.form['email'])\
 		.filter_by(password = pw).first() 
 		#print session['logged_in']
 		if user is None:
@@ -72,7 +75,7 @@ def create():
 	salt = 'gnarlysaltd00d'
 
 	if request.method == 'POST':
-		newUser = m.User(request.form['email'], request.form['password'],
+		newUser = m.user(request.form['email'], hashConvert(request.form['password']),
 			request.form['firstName'], request.form['lastName'],
 			request.form['age'], request.form['city'], request.form['state'])
 		m.db.session.add(newUser)
@@ -90,28 +93,78 @@ def home():
    		print g.user
 		return render_template('home.html')
 
+@app.route('/_dropdown')
+def add_numbers():
+
+
+
+    return jsonify(exercise)
+
+CATEGORY_LIST = []
+    #by userid
+a = m.category.query.filter_by(userID=2).all()
+for x in a:
+    CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
+
+b = m.exercise.query.all()
+EXERCISE_LIST = []
+for x in b:
+    EXERCISE_LIST.append({'exerciseID': x.id, 'categoryID': x.categoryID, 'name': x.name})
 
 def track():
-    """Gather exercise details, insert into DB"""
-    
-    if session['logged_in'] == False:
-    	abort(401)
+
+    """
+    Render a vehicle selection form and handle form submission
+    """
+
+
+    form = WorkoutChoiceForm(request.form)
+    a = m.exercise.query.all()
+    form.exercise.choices = [('', '--- Select One ---')] + [
+        (x['categoryID'], x['name']) for x in CATEGORY_LIST]
+    #print form.make.choices
+    chosen_category = None
+    chosen_exercise = None
 
     if request.method == 'POST':
+        chosen_category = form.category.data
+        chosen_exercise = form.exercise.data
 
-    	dt = datetime.now()
-    	workout = m.Workout(request.form['exercise'], request.form['sets'], request.form[
-            'reps'], request.form['weight'], request.form[
-            'category'], g.user, dt)
-    	m.db.session.add(workout)
-    	m.db.session.commit()
+        dt = datetime.now()
 
-    exercise = m.Exercise.query.filter_by(userid = g.user).all()
-    workout = m.Workout.query.all()
+        exHeader = m.exHeader(g.user, 1, chosen_exercise)
 
-    return render_template('track.html',
-    	workout=workout,
-    	exercise=exercise)
+        #this is wrong fix just temp
+        exH = m.exHeader.query.filter_by(userID = g.user).first()
+        
+        m.db.session.add(exH)
+
+        exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
+            request.form['weight'], dt)
+
+        m.db.session.add(exL)
+        m.db.session.commit()
+
+    context = {
+        'form': form,
+        'chosen_category': chosen_category,
+        'chosen_exercise': chosen_exercise,
+    }
+    return render_template('track.html', **context)
+
+
+class ModelsAPI(MethodView):
+    def get(self, categoryID):
+        """
+        Handle a GET request at /models/<make_id>/
+        Return a list of 2-tuples (<model id>, <model name>)
+        """
+        data = [
+            (x['exerciseID'], x['name']) for x in CATEGORY_LIST
+            if x['categoryID'] == categoryID]
+        response = category_response(json.dumps(data))
+        response.content_type = 'application/json'
+        return response
 
 
 def add_exercise():
@@ -136,12 +189,21 @@ def me():
 	if session['logged_in'] == False:
 		abort(401)
 	else:
-		workout = m.Workout.query.filter_by(userid = g.user).all()
+		#user info
+		user = m.user.query.filter_by(id=g.user)
+
+		#recent exercises
+		exh = m.exHeader.query.filter_by(userID=g.user).first()
+		#exl = m.exLine.query.filter_by(exHeaderID = exh.id).first()
+		#category = m.category.query.filter_by(id=exh.categoryID)
 
 	return render_template('me.html',
-		workout=workout)
+		user=user)
 
 def hashConvert(pwIn):
+	"""
+	Handle creating/reading salt/hash of pws
+	"""
 
 	salt = '1337h4x0rz'
 	return hashlib.md5(salt + pwIn).hexdigest()

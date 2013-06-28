@@ -28,21 +28,17 @@
         
 		<div class="field_holder">
 			<label>Category</label>
-			<select id="category" name="category">
-				{% for e in exercise %}
-					<option value="{{e.workout}}">{{e.category}}</option>
-				{% endfor %}
-			</select>
+			<ul>
+				<li>t</li>
+			</ul>
 			<a id="yep" href="{{ url_for('add') }}">Add</a>
 		</div>
 
 		<div class ="field_holder">
 			<label>Exercise</label>
-			<select id="exercise" name="exercise">
-				{% for x in exercise %}
-					<option value="{{x.workout}}">{{x.workout}}</option>
-				{% endfor %}
-			</select>
+			<ul>
+				<li>e/li>
+			</ul>
 		</div>
         
 		<div class ="field_holder">
@@ -85,7 +81,8 @@
         
 </div>
 
-	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="/assets/track.js"></script>
 
 </body>
 </html>
