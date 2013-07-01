@@ -20,19 +20,17 @@ class user(db.Model):
     firstName = db.Column(db.String(50))
     lastName = db.Column(db.String(50))
     age = db.Column(db.Integer())
-    city = db.Column(db.String(30))
-    state = db.Column(db.String(2))
+    location = db.Column(db.String(30))
 
     def __init__(self, email, password, firstName, lastName,
-        age, city, state):
+        age, location):
 
         self.email = email
         self.password = password
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
-        self.city = city
-        self.state = state
+        self.location = location
 
     def __repr__(self):
 
@@ -40,6 +38,7 @@ class user(db.Model):
 
 class category(db.Model):
 
+    __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     userID = db.Column(db.Integer)

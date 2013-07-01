@@ -8,7 +8,6 @@ from fitTrack.forms import WorkoutChoiceForm
 
 from flask.views import MethodView
 
-
 def auth(form):
 
 	if 'email' in request.form:
@@ -16,7 +15,7 @@ def auth(form):
 
 		if u:
 			session['user'] = u.id
-			print session['user']
+			#print session['user']
 			return True
 
 	return False
@@ -41,12 +40,14 @@ def login():
 	"""Handle logging in of users"""
 
 	session['logged_in'] = False
+	
 	if request.method == 'POST':
 
 		pw = hashConvert(request.form['password'])
 		user = m.user.query.filter_by(email = request.form['email'])\
 		.filter_by(password = pw).first() 
 		#print session['logged_in']
+
 		if user is None:
 			error = 'Invalid Email'
 			flash('Invalid credentials', error)
@@ -77,10 +78,10 @@ def create():
 	if request.method == 'POST':
 		newUser = m.user(request.form['email'], hashConvert(request.form['password']),
 			request.form['firstName'], request.form['lastName'],
-			request.form['age'], request.form['city'], request.form['state'])
+			request.form['age'], request.form['location'])
 		m.db.session.add(newUser)
 		m.db.session.commit()
-
+		print 'post'
 	return render_template('create.html')
 
 
@@ -93,13 +94,6 @@ def home():
    		print g.user
 		return render_template('home.html')
 
-@app.route('/_dropdown')
-def add_numbers():
-
-
-
-    return jsonify(exercise)
-
 CATEGORY_LIST = []
     #by userid
 a = m.category.query.filter_by(userID=2).all()
@@ -108,8 +102,9 @@ for x in a:
 
 b = m.exercise.query.all()
 EXERCISE_LIST = []
-for x in b:
-    EXERCISE_LIST.append({'exerciseID': x.id, 'categoryID': x.categoryID, 'name': x.name})
+for y in b:
+    EXERCISE_LIST.append({'exerciseID': y.id, 'categoryID': y.categoryID, 'name': y.name})
+print EXERCISE_LIST
 
 def track():
 
@@ -117,10 +112,9 @@ def track():
     Render a vehicle selection form and handle form submission
     """
 
-
     form = WorkoutChoiceForm(request.form)
-    a = m.exercise.query.all()
-    form.exercise.choices = [('', '--- Select One ---')] + [
+
+    form.category.choices = [('', '--- Select One ---')] + [
         (x['categoryID'], x['name']) for x in CATEGORY_LIST]
     #print form.make.choices
     chosen_category = None
@@ -130,20 +124,20 @@ def track():
         chosen_category = form.category.data
         chosen_exercise = form.exercise.data
 
-        dt = datetime.now()
+    #    dt = datetime.now()
 
-        exHeader = m.exHeader(g.user, 1, chosen_exercise)
+    #    exHeader = m.exHeader(g.user, 1, chosen_exercise)
 
         #this is wrong fix just temp
-        exH = m.exHeader.query.filter_by(userID = g.user).first()
+    #    exH = m.exHeader.query.filter_by(userID = g.user).first()
         
-        m.db.session.add(exH)
+    #    m.db.session.add(exH)
 
-        exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
-            request.form['weight'], dt)
+    #    exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
+    #        request.form['weight'], dt)
 
-        m.db.session.add(exL)
-        m.db.session.commit()
+    #    m.db.session.add(exL)
+    #    m.db.session.commit()
 
     context = {
         'form': form,
@@ -159,10 +153,11 @@ class ModelsAPI(MethodView):
         Handle a GET request at /models/<make_id>/
         Return a list of 2-tuples (<model id>, <model name>)
         """
+        print categoryID
         data = [
-            (x['exerciseID'], x['name']) for x in CATEGORY_LIST
+            (x['exerciseID'], x['name']) for x in EXERCISE_LIST
             if x['categoryID'] == categoryID]
-        response = category_response(json.dumps(data))
+        response = make_response(json.dumps(data))
         response.content_type = 'application/json'
         return response
 

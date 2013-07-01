@@ -13,36 +13,41 @@
 
 <div id="signup_container">
 
-	<form class="signup_area" action="{{ url_for('login') }}" method=post class=track>
+	<form class="signup_area" action="{{ url_for('create') }}" method=post class=track>
+
+		<div class="field_holder">
+        	<label>Email</label>
+			<input class="field" type="text" placeholder="Email" name = "email" id="email">
+		</div>
 			
 		<div class="field_holder">
         	<label>First Name</label>
-			<input class="field" type="text" placeholder="First Name" name = email id = "email">
+			<input class="field" type="text" placeholder="First Name" name = "firstName" id="firstName">
 		</div>
                     
 		<div class="field_holder">
         	<label>Last Name</label>
-			<input class="field" type = "text" placeholder="Last Name" name = password>
+			<input class="field" type = "text" placeholder="Last Name" name = "lastName" id="lastName">
 		</div>
         
         <div class="field_holder">
         	<label>Age</label>
-			<input class="field" type = "text" placeholder="Age" name = password>
+			<input class="field" type = "text" placeholder="Age" name = "age" id="age">
 		</div>
         
         <div class="field_holder">
         	<label>Location</label>
-			<input class="field" type = "text" placeholder="City, State" name = password>
+			<input class="field" type = "text" placeholder="City, State" name = "location" id="location">
 		</div>
         
         <div class="field_holder">
         	<label>Password</label>
-			<input class="field" type = "password" placeholder="Password" name = password>
+			<input class="field" type = "password" placeholder="Password" name = "password" id="password">
 		</div>
         
         <div class="field_holder">
         	<label>Confirm Password</label>
-			<input class="field" type = "password" placeholder="Password" name = password>
+			<input class="field" type = "password2" placeholder="Password2" name = password2 id="password2">
 		</div>
                     
 		<div class="submit_holder">
