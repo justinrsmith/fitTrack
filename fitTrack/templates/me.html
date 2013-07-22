@@ -1,28 +1,50 @@
-{% extends 'base.html' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>fitTrack - Recent Activity</title>
+<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
+<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
+</head>
 
-{% block content %}
-<div class="container">
+<body>
 
-<div class = "span8">
-	<table class = "table table-bordered table-striped table-hover">
-		<h3>Recent Activity</h3>
-		<th><h6>Category</th></h6>
-		<th><h6>Exercise</th></h6>
-		<th><h6>Sets</th></h6>
-		<th><h6>Reps</th></h6>
-		<th><h6>Weight</th></h6>
-			{% if workout %}
-			{% for w in workout %}
-				<tr><td>{{w.category}}</td>
-				<td>{{w.exercise}}</td>
-				<td>{{w.sets}}</td>
-				<td>{{w.reps}}</td>
-				<td>{{w.weight}}</td>
+<div class="top_bar"></div>
+
+<div id="me_page_main-container">
+    	<ul id="navigation">
+			<li><a href="track">Track</a></li>
+			<li><a class="selected" href="me">Me</a></li>
+			<li><a href="logout">Logout</a></li>
+        </ul>
+        
+        
+        <div class="section_header">
+        	<h1>Your Recent Activity</h1>
+        </div>
+
+<table id="recent_activity">
+	<th><h2>Category</h2></th>
+	<th><h2>Exercise</h2></th>
+	<th><h2>Sets</h2></th>
+	<th><h2>Reps</h2></th>
+	<th><h2>Weight</h2></th>
+		{% if recent %}
+			{% for r in recent %}
+				<tr><td>{{ r.header.categoryID }}</td>
+				<td>{{ r.header.exerciseID }}</td>
+				<td>{{ r.sets }}</td>
+				<td>{{ r.reps }}</td>
+				<td>{{ r.weight }}</td>
 				</td></tr>
-
-		{% endfor %}
+			{% endfor %}
 		{% endif %}
-	</table>
+</table>
+<table id="user_summary">
+		<th>test</th>
+</table>
+
 </div>
-</div>
-{% endblock %}
+
+</body>
+</html>

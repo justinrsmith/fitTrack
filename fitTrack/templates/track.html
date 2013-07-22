@@ -1,66 +1,89 @@
-{% extends 'base.html' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>fitTrack - Track</title>
+<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
+<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
 
-{% block content %}
 
+</head>
 
-<div class = "row">
-<div class = "span12">
-<form class = "form-horizontal" action="{{ url_for('track') }}" method=post class=track>
-	<fieldset>
-		<legend>Track Workout</legend>
-		<div class = "contol-group">
-			<label class = "control-label">Category</label>
-		</div>
-		{% if exercise %}
-		<div class = "controls">
-			<select id="category" name="category">
-				{% for e in exercise %}
-					<option value="{{e.workout}}">{{e.category}}</option>
-				{% endfor %}
-			</select>
-			<a href="{{ url_for('add') }}"><i class="icon-plus"></i>Add</a>
+<body>
+
+<div class="top_bar"></div>
+
+<div id="track_page_main-container">
+    	<ul id="navigation">
+			<li><a class="selected" href="track">Track</a></li>
+			<li><a href="me">Me</a></li>
+			<li class="right"><a href="logout">Logout</a></li>
+        </ul>
+        
+        
+        <div class="section_header">
+        	<h1>Track Your Workout</h1>
+        </div>
+        <form id="track_container" action="{{ url_for('track') }}" method=post class=track>
+        {{ form.hidden_tag() }}
+		<div class="field_holder">
+			
+			<label>Category</label>
+			<ul>
+				{{ form.category(id='category_select') }}
+			</ul>
+			<a id="yep" href="{{ url_for('add') }}">Add</a>
 		</div>
 
-		<br>
-		<div class = "contol-group">
-			<label class = "control-label">Exercise</label>
+		<div class ="field_holder">
+			<label>Exercise</label>
+			<ul>
+				{{ form.exercise(id='exercise_select') }}
+			</ul>
 		</div>
-		<div class = "controls">
-			<select id="exercise" name="exercise">
-				{% for x in exercise %}
-					<option value="{{x.workout}}">{{x.workout}}</option>
-				{% endfor %}
-			</select>
+        
+		<div class ="field_holder">
+			<label>Sets</label>
+			<input class="field" type="number" placeholder="Enter The Number of Sets You Completed" name = sets>
 		</div>
-		{% endif %}
-		<br>
-		<div class = "contol-group">
-			<label class = "control-label">Sets</label>
+        
+		<div class ="field_holder">
+			<label>Reps</label>
+			<input class="field" type="number" placeholder="Enter The Number of Reps You Did" name = reps>
 		</div>
-		<div class = "controls">
-			<input type = "number" name = sets>
+        
+		<div class ="field_holder">
+			<label>Weight</label>
+			<input class="field" type="number" placeholder="Enter The Amount of Weight You Did" name = weight>
 		</div>
-		<br>
-		<div class = "contol-group">
-			<label class = "control-label">Reps</label>
+
+		<div class="submit_holder">
+			<button type="submit" class = "btn">Submit</button>
 		</div>
-		<div class = "controls">
-			<input type = "number" name = reps>
-		</div>
-		<br>
-		<div class = "contol-group">
-			<label class = "control-label">Weight</label>
-		</div>
-		<div class = "controls">
-			<input type = "number" name = weight>
-		</div>
-		<br>
-		<div class = "controls">
-			<button type = "submit" class = "btn">Submit</button>
-		</div>
-	</fieldset>
 </form>
 
+<div id="track-info">
+	<div class="definition">
+	<h2>Exercise</h2>
+	<p>Each individual movement (e.g., a seated pulley row, barbell curl, or seated calf raise) that you perform in your bodybuilding workouts.</p>
+    </div>
+    
+    <div class="definition">
+	<h2>Sets</h2>
+	<p>Group of reps (lifting and lowering a weight) of an exercise after which you take a brief rest period.</p>
+    </div>
+
+	<div class="definition">
+	<h2>Repetition</h2>
+	<p>The number of times you lift and lower a weight in one set of an exercise.</p>
+    </div>
 </div>
+        
+        
 </div>
-{% endblock %}
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="/static/track.js"></script>
+
+</body>
+</html>

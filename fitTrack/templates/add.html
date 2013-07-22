@@ -1,30 +1,61 @@
-{% extends 'base.html' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>fitTrack - Add Category</title>
+<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
+<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
+</head>
 
-{% block content %}
-div class = "row">
-<div class = "span12">
-<form class = "form-horizontal" action="{{ url_for('add') }}" method=post class=track>
-	<fieldset>
-		<legend>Track Workout</legend>
-		<div class = "contol-group">
-			<label class = "control-label">Category</label>
+<body>
+
+<div class="top_bar"></div>
+
+<div id="add_page_main-container">
+    	<ul id="navigation">
+			<li><a class="selected" href="track">Track</a></li>
+			<li><a href="me">Me</a></li>
+			<li><a href="logout">Logout</a></li>
+        </ul>
+        
+        
+        <div class="section_header">
+        	<h1>Add Category</h1>
+        </div>
+<form id="add_container" action="{{ url_for('add') }}" method="post">
+        
+		<div class="field_holder">
+			<label>Category</label>
+			<input class="field" type="text" placeholder="Enter A New Category Name" name="category">
 		</div>
-		<div class = "controls">
-			<input type = "text" name = category>
+
+		<div class="field_holder">
+			<label>Exercise</label>
+			<input class="field" type="text" placeholder="Enter A New Exercise Name" name="exercise">
 		</div>
-		<br>
-		<div class = "contol-group">
-			<label class = "control-label">Workout</label>
+
+		<div class="submit_holder">
+			<button type="submit" class = "btn">Submit</button>
 		</div>
-		<div class = "controls">
-			<input type = "text" name = workout>
-		</div>
-		<br>
-		<div class = "controls">
-			<button type = "submit" class = "btn">Submit</button>
-		</div>
-	</fieldset>
 </form>
+
+<div id="category_info">
+	<div class="definition">
+	<h2>Category</h2>
+	<p>Text would go here.</p>
+    </div>
+    
+    <div class="definition">
+	<h2>Workout</h2>
+	<p>Text would go here.</p>
+    </div>
+
+</div>
+        
+        
 </div>
 
-{% endblock %}
+	
+
+</body>
+</html>

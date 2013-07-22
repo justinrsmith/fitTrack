@@ -7,40 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 
 db = SQLAlchemy(app)
 
-class Workout(db.Model):
-    """The class/table for excercise data
-
-    id int
-    excercise string
-    sets int
-    reps int
-    weight int"""
-    
-    id = db.Column(db.Integer(), primary_key=True)
-    exercise = db.Column(db.String(25))
-    sets = db.Column(db.Integer())
-    reps = db.Column(db.Integer())
-    weight = db.Column(db.Integer())
-    category = db.Column(db.String(30))
-    userid = db.Column(db.Integer())
-    logtime = db.Column(db.DateTime)
-
-    def __init__(self, exercise, sets, reps, weight, category, userid,\
-        logtime):
-
-        self.exercise = exercise
-        self.sets = sets
-        self.reps = reps
-        self.weight = weight
-        self.category = category
-        self.userid = userid
-        self.logtime = logtime
-
-    def __repr__(self):
-
-        return self.exercise
-
-class User(db.Model):
+class user(db.Model):
     """The class/table for user data
 
     id int
@@ -50,27 +17,105 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(40))
     password = db.Column(db.String(16))
+    firstName = db.Column(db.String(50))
+    lastName = db.Column(db.String(50))
+    age = db.Column(db.Integer())
+    location = db.Column(db.String(30))
 
-    def __init__(self, email, password):
+    def __init__(self, email, password, firstName, lastName,
+        age, location):
 
         self.email = email
         self.password = password
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+        self.location = location
 
     def __repr__(self):
 
         return id
 
-class Exercise(db.Model):
+class category(db.Model):
 
-    #__tablenane__ = 'exercise'
+    __tablename__ = 'category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30))
+    userID = db.Column(db.Integer)
+
+    def __init__(self, name, userID):
+        self.name = name
+        self.userID = userID
+
+    def __repr__(self):
+
+        return self.name
+
+class exercise(db.Model):
+
     id = db.Column(db.Integer(), primary_key=True)
-    category = db.Column(db.String(30))
-    workout = db.Column(db.String(30))
-    userid = db.Column(db.Integer())
+    name = db.Column(db.String(10))
+    userID = db.Column(db.Integer())
+    categoryID = db.Column(db.Integer())
 
-    def __init__(self, category, workout, userid):
+    def __init__(self, name, userID, categoryID):
 
-        self.category = category
-        self.workout = workout
-        self.userid = userid
+        self.name = name
+        self.userID = userID
+        self.categoryID = categoryID
+
+    def __repr__(self):
+        return self.name
+
+class exHeader(db.Model):
+
+    __tablename__ = 'exHeader'
+    id = db.Column(db.Integer(), primary_key=True)
+    userID = db.Column(db.Integer())
+    categoryID = db.Column(db.Integer())
+    exerciseID = db.Column(db.Integer())
+    
+
+    def __init__(self, userID, categoryID, exerciseID):
+
+        self.userID = userID
+        self.categoryID = categoryID
+        self.exerciseID = exerciseID
+
+    def __repr__(self):
+
+        return str(self.id)
+
+class exLine(db.Model):
+
+    __tablename__ = 'exLine'
+    id = db.Column(db.Integer(), primary_key=True)
+    exHeaderID = db.Column(db.Integer(), db.ForeignKey(exHeader.id))
+    reps = db.Column(db.Integer())
+    sets = db.Column(db.Integer())
+    weight = db.Column(db.Integer())
+    submitted = db.Column(db.Date())
+    header = relationship('exHeader')
+
+    def __init__(self, exHeaderID, reps, sets, weight, submitted):
+
+        self.exHeaderID = exHeaderID
+        self.reps = reps
+        self.sets = sets
+        self.weight = weight
+        self.submitted = submitted
+
+    def __repr__(self):
+
+        return str(self.exHeaderID)
+
+
+
+
+
+
+
+
+
+
 		
