@@ -29,27 +29,22 @@
 	<th><h2>Sets</h2></th>
 	<th><h2>Reps</h2></th>
 	<th><h2>Weight</h2></th>
-			{% if workout %}
-			{% for w in workout %}
-				<tr><td>{{w.category}}</td>
-				<td>{{w.exercise}}</td>
-				<td>{{w.sets}}</td>
-				<td>{{w.reps}}</td>
-				<td>{{w.weight}}</td>
+		{% if recent %}
+			{% for r in recent %}
+				<tr><td>{{ r.header.categoryID }}</td>
+				<td>{{ r.header.exerciseID }}</td>
+				<td>{{ r.sets }}</td>
+				<td>{{ r.reps }}</td>
+				<td>{{ r.weight }}</td>
 				</td></tr>
-
-		{% endfor %}
+			{% endfor %}
 		{% endif %}
-
+</table>
+<table id="user_summary">
+		<th>test</th>
 </table>
 
-
-        
-        
 </div>
-
-
-	
 
 </body>
 </html>

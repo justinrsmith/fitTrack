@@ -36,6 +36,8 @@ def something():
 		g.user = session['user_id']
 
 
+
+
 def login():
 	"""Handle logging in of users"""
 
@@ -94,23 +96,22 @@ def home():
    		print g.user
 		return render_template('home.html')
 
-CATEGORY_LIST = []
-    #by userid
-a = m.category.query.filter_by(userID=2).all()
-for x in a:
-    CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
-b = m.exercise.query.all()
-EXERCISE_LIST = []
-for y in b:
-    EXERCISE_LIST.append({'exerciseID': y.id, 'categoryID': y.categoryID, 'name': y.name})
-print EXERCISE_LIST
+
+
+#print CATEGORY_LIST
 
 def track():
 
     """
     Render a vehicle selection form and handle form submission
     """
+
+    CATEGORY_LIST = []
+
+    a = m.category.query.filter_by(userID=2).all()
+    for x in a:
+        CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
     form = WorkoutChoiceForm(request.form)
 
@@ -124,20 +125,22 @@ def track():
         chosen_category = form.category.data
         chosen_exercise = form.exercise.data
 
-    #    dt = datetime.now()
+        dt = datetime.now()
+        #dt = d.strftime("%Y-%m-%d %H:%M:%S")
 
-    #    exHeader = m.exHeader(g.user, 1, chosen_exercise)
-
+        exHeader = m.exHeader(g.user, 1, chosen_exercise)
+        m.db.session.add(exHeader)
+        m.db.session.commit()
         #this is wrong fix just temp
-    #    exH = m.exHeader.query.filter_by(userID = g.user).first()
+        exH = m.exHeader.query.filter_by(userID = g.user).first()
         
-    #    m.db.session.add(exH)
+        #m.db.session.add(exH)
 
-    #    exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
-    #        request.form['weight'], dt)
+        exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
+            request.form['weight'], dt)
 
-    #    m.db.session.add(exL)
-    #    m.db.session.commit()
+        m.db.session.add(exL)
+        m.db.session.commit()
 
     context = {
         'form': form,
@@ -153,7 +156,11 @@ class ModelsAPI(MethodView):
         Handle a GET request at /models/<make_id>/
         Return a list of 2-tuples (<model id>, <model name>)
         """
-        print categoryID
+        b = m.exercise.query.all()
+        EXERCISE_LIST = []
+        for y in b:
+            EXERCISE_LIST.append({'exerciseID': y.id, 'categoryID': y.categoryID, 'name': y.name})
+
         data = [
             (x['exerciseID'], x['name']) for x in EXERCISE_LIST
             if x['categoryID'] == categoryID]
@@ -168,10 +175,14 @@ def add_exercise():
 	"""
 
 	if request.method == 'POST':
-		newExercise = m.Exercise(request.form['category'], 
-			request.form['workout'], g.user)
+		newCategory = m.category(request.form['category'], g.user)
+		m.db.session.add(newCategory)
+		m.db.session.commit()
+		newExercise = m.exercise(request.form['exercise'], g.user, newCategory.id)
 		m.db.session.add(newExercise)
 		m.db.session.commit()
+		
+		print newCategory.id
 
 	return render_template('add.html')
 
@@ -185,15 +196,14 @@ def me():
 		abort(401)
 	else:
 		#user info
-		user = m.user.query.filter_by(id=g.user)
+		u = m.user.query.filter_by(id=g.user)
 
 		#recent exercises
-		exh = m.exHeader.query.filter_by(userID=g.user).first()
-		#exl = m.exLine.query.filter_by(exHeaderID = exh.id).first()
-		#category = m.category.query.filter_by(id=exh.categoryID)
+		x = m.exLine.query.all()
 
 	return render_template('me.html',
-		user=user)
+		recent=x,
+		)
 
 def hashConvert(pwIn):
 	"""

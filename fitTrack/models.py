@@ -43,7 +43,7 @@ class category(db.Model):
     name = db.Column(db.String(30))
     userID = db.Column(db.Integer)
 
-    def __init_(self, name, userID):
+    def __init__(self, name, userID):
         self.name = name
         self.userID = userID
 
@@ -74,6 +74,7 @@ class exHeader(db.Model):
     userID = db.Column(db.Integer())
     categoryID = db.Column(db.Integer())
     exerciseID = db.Column(db.Integer())
+    
 
     def __init__(self, userID, categoryID, exerciseID):
 
@@ -83,17 +84,18 @@ class exHeader(db.Model):
 
     def __repr__(self):
 
-        return self.id
+        return str(self.id)
 
 class exLine(db.Model):
 
     __tablename__ = 'exLine'
     id = db.Column(db.Integer(), primary_key=True)
-    exHeaderID = db.Column(db.Integer())
+    exHeaderID = db.Column(db.Integer(), db.ForeignKey(exHeader.id))
     reps = db.Column(db.Integer())
     sets = db.Column(db.Integer())
     weight = db.Column(db.Integer())
     submitted = db.Column(db.Date())
+    header = relationship('exHeader')
 
     def __init__(self, exHeaderID, reps, sets, weight, submitted):
 
@@ -105,7 +107,7 @@ class exLine(db.Model):
 
     def __repr__(self):
 
-        return self.exHeaderID
+        return str(self.exHeaderID)
 
 
 
