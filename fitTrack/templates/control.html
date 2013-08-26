@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script language="javascript" type="text/javascript">
+// <!CDATA[
+
+
+function pwcheck() {
+var pass1 = document.getElementById("newpw");
+var pass2 = document.getElementById("verifypw");
+if(pass1.value==pass2.value){
+ alert("Password Match");
+ return true;
+}
+else { alert("Password do not match."); return false;}
+    
+
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span3">
+	<h3>Account Management</h3>
+	<form class="form-horizontal" method=post>
+  		<div class="control-group">
+  			<label class="control-label" for="currentpw">Current Password</label>
+  		<div class="controls">
+  			<input type="password" id="currentpw" name="currentpw">
+  		</div>
+  		</div>
+  		<div class="control-group">
+  			<label class="control-label" for="newpw">New Password</label>
+  		<div class="controls">
+  			<input type="password" id="newpw" name="newpw">
+  		</div>
+  		</div>
+  		  	<div class="control-group">
+  			<label class="control-label" for="verifypw">Verify Password</label>
+  		<div class="controls">
+  			<input type="password" id="verifypw" name="verifypw">
+  		</div>
+  		</div>
+  		<br>
+  		<button type="submit" class="btn" onClick="return pwcheck();">Update Password</button>
+  	</form>
+	</div>
+</div>
+{% endblock %}
+

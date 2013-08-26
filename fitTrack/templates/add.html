@@ -1,61 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>fitTrack - Add Category</title>
-<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
-<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
-</head>
+{% extends 'base.html' %}
 
-<body>
-
-<div class="top_bar"></div>
-
-<div id="add_page_main-container">
-    	<ul id="navigation">
-			<li><a class="selected" href="track">Track</a></li>
-			<li><a href="me">Me</a></li>
-			<li><a href="logout">Logout</a></li>
-        </ul>
+{% block content %}
         
         
-        <div class="section_header">
-        	<h1>Add Category</h1>
-        </div>
-<form id="add_container" action="{{ url_for('add') }}" method="post">
-        
-		<div class="field_holder">
-			<label>Category</label>
-			<input class="field" type="text" placeholder="Enter A New Category Name" name="category">
-		</div>
+<div class="row">
+	<div class="col-8">
+		<h2>Add Category</h1>
+		<form class="form-horizontal" action="{{ url_for('add') }}" method="post">        
+			<div class="form-group">
+				<div class="col-lg-4">
+					<label for="category">Category</label>
+					<input class="field" type="text" placeholder="Category" name="category">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-4">
+					<label for="exercise">Exercise</label>
+					<input class="field" type="text" placeholder="Exercise" name="exercise">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-offset-2 col-lg-4">
+				<button type="submit" class = "btn">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
 
-		<div class="field_holder">
-			<label>Exercise</label>
-			<input class="field" type="text" placeholder="Enter A New Exercise Name" name="exercise">
-		</div>
-
-		<div class="submit_holder">
-			<button type="submit" class = "btn">Submit</button>
-		</div>
-</form>
-
-<div id="category_info">
-	<div class="definition">
-	<h2>Category</h2>
-	<p>Text would go here.</p>
-    </div>
-    
-    <div class="definition">
-	<h2>Workout</h2>
-	<p>Text would go here.</p>
-    </div>
-
-</div>
-        
-        
+	<div class="col-4">
+		<div class="definition">
+			<h2>Category</h2>
+			<p>What group to place exercise in (I.E. Arms, Legs, Shoulders, etc)</p>
+	    </div>
+	    <div class="definition">
+			<h2>Workout</h2>
+			<p>What exercise to place in category (I.E. Curls, Press, Raises, etc)</p>
+	    </div>
+	</div>      
 </div>
 
-	
-
-</body>
-</html>
+<h1>jQuery Example</h1>
+<p><input type=text size=5 name=a> +
+   <input type=text size=5 name=b> =
+   <span id="result">?</span>
+<p><a href="#" id="calculate">calculate server side</a>
+{% endblock %}
+<script type=text/javascript>
+  $(function() {
+    $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/_add_numbers', {
+        a: $('input[name="a"]').val(),
+        b: $('input[name="b"]').val()
+      }, function(data) {
+        $("#result").text(data.result);
+      });
+      return false;
+    });
+  });
+</script>

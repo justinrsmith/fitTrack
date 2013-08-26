@@ -1,21 +1,29 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
-		<link type="text/css" rel = "stylesheet" href={{ url_for('static',filename='bootstrap/css/bootstrap.css') }}>
+    	<title>fitTrack v-0.01</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<!-- Bootstrap -->
+    	<link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		{% block head %}{% endblock %}
 	</head>
 	<!--<body style = "padding:4">-->
-
-	<div class="navbar navbar-fixed-top">
-		<div class = "navbar-inner">
-				<ul class="nav">
-					<li class="active">
-					<li><a href=track>Track</a></li>
-					<li><a href=me>Me</a></li>
-					<li><a href=logout>Logout</a></li>
+	<body>
+		<div class="navbar">
+			<div class="navbar-inner">
+    			<ul class="nav nav-tabs">
+					<li><a href="track">Track</a></li>
+					<li><a href="me">Me</a></li>
+					<div class="nav pull-right">
+						<li><a href="logout">Logout</a></li>
+					</div>
+					<div class="nav pull-right">
+						<li><a href="control">Control Panel</a></li>
+					</div>
 				</ul>
-		</div>
-	</div>
+        	</div>
+        </div>
+
 			{% with messages = get_flashed_messages(with_categories=true) %}
 			{% if messages %}
 			<div id="messages">
@@ -30,9 +38,10 @@
 			</div>
 			{% endif %}
 		{% endwith %}	
-	<div class = "container">
+		<div class="container">
 			{% block content %}
 			{% endblock %}	
-	</div>
+		</div>
+
 	</body>
 </html>

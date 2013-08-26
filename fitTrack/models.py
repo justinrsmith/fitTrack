@@ -7,6 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 
 db = SQLAlchemy(app)
 
+
 class user(db.Model):
     """The class/table for user data
 
@@ -17,16 +18,18 @@ class user(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(40))
     password = db.Column(db.String(16))
+    salt = db.Column(db.String(64))
     firstName = db.Column(db.String(50))
     lastName = db.Column(db.String(50))
     age = db.Column(db.Integer())
     location = db.Column(db.String(30))
 
-    def __init__(self, email, password, firstName, lastName,
+    def __init__(self, email, password, salt, firstName, lastName,
         age, location):
 
         self.email = email
         self.password = password
+        self.salt = salt
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
@@ -35,6 +38,7 @@ class user(db.Model):
     def __repr__(self):
 
         return id
+
 
 class category(db.Model):
 
@@ -51,8 +55,10 @@ class category(db.Model):
 
         return self.name
 
+
 class exercise(db.Model):
 
+    __tablename__ = 'exercise'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(10))
     userID = db.Column(db.Integer())
@@ -67,15 +73,17 @@ class exercise(db.Model):
     def __repr__(self):
         return self.name
 
+
 class exHeader(db.Model):
 
     __tablename__ = 'exHeader'
     id = db.Column(db.Integer(), primary_key=True)
     userID = db.Column(db.Integer())
-    categoryID = db.Column(db.Integer())
-    exerciseID = db.Column(db.Integer())
+    categoryID = db.Column(db.Integer(), db.ForeignKey(category.id))
+    exerciseID = db.Column(db.Integer(), db.ForeignKey(exercise.id))
+    category = relationship('category')
+    exercise = relationship('exercise')
     
-
     def __init__(self, userID, categoryID, exerciseID):
 
         self.userID = userID
@@ -85,6 +93,7 @@ class exHeader(db.Model):
     def __repr__(self):
 
         return str(self.id)
+
 
 class exLine(db.Model):
 

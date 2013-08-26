@@ -5,8 +5,11 @@ import json
 from datetime import datetime
 import hashlib
 from fitTrack.forms import WorkoutChoiceForm
-
 from flask.views import MethodView
+from flask.ext.mail import Mail
+from flask.ext.mail import Message
+import os
+
 
 def auth(form):
 
@@ -15,7 +18,6 @@ def auth(form):
 
 		if u:
 			session['user'] = u.id
-			#print session['user']
 			return True
 
 	return False
@@ -30,12 +32,9 @@ def something():
 		return
 	elif not session.get('logged_in', False):
 		pass
-		#return redirect(login_url)
 
 	if not request.path == url_for('create'):
 		g.user = session['user_id']
-
-
 
 
 def login():
@@ -45,10 +44,12 @@ def login():
 	
 	if request.method == 'POST':
 
-		pw = hashConvert(request.form['password'])
+		pw = pw_fetch(request.form['password'])
+		print pw[0]
+		print pw[1]
 		user = m.user.query.filter_by(email = request.form['email'])\
-		.filter_by(password = pw).first() 
-		#print session['logged_in']
+		.filter_by(password = pw[0])\
+		.filter_by(salt = pw[1]).first() 
 
 		if user is None:
 			error = 'Invalid Email'
@@ -70,20 +71,34 @@ def logout():
 	flash('You were logged out')
 	return redirect(url_for('login'))
 
+
 def create():
 	"""
 	User created login
 	"""
 
-	salt = 'gnarlysaltd00d'
-
 	if request.method == 'POST':
-		newUser = m.user(request.form['email'], hashConvert(request.form['password']),
-			request.form['firstName'], request.form['lastName'],
-			request.form['age'], request.form['location'])
-		m.db.session.add(newUser)
-		m.db.session.commit()
-		print 'post'
+		exists = m.user.query.filter_by(email=request.form['email']).first()
+
+		if not exists:
+			newUser = m.user(request.form['email'], pw_hash(request.form['password']),
+				pw_salt(),
+				request.form['firstName'], request.form['lastName'],
+				request.form['age'], request.form['location'])
+			m.db.session.add(newUser)
+			m.db.session.commit()
+
+
+		#mail = Mail(app)
+		#mail.init_app(app)
+		
+		#msg = Message('Hello',
+		#	sender='justinrsmith88@gmail.com',
+		#	recipients=['justinrsmith88@gmail.com'])
+		#msg.body='body'
+		#mail.send(msg)
+		#return 'sent'
+
 	return render_template('create.html')
 
 
@@ -97,27 +112,20 @@ def home():
 		return render_template('home.html')
 
 
-
-
-#print CATEGORY_LIST
-
 def track():
-
     """
-    Render a vehicle selection form and handle form submission
+    Create dropdowns
+    User submits their data
     """
 
     CATEGORY_LIST = []
-
     a = m.category.query.filter_by(userID=2).all()
     for x in a:
         CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
     form = WorkoutChoiceForm(request.form)
-
     form.category.choices = [('', '--- Select One ---')] + [
         (x['categoryID'], x['name']) for x in CATEGORY_LIST]
-    #print form.make.choices
     chosen_category = None
     chosen_exercise = None
 
@@ -126,15 +134,12 @@ def track():
         chosen_exercise = form.exercise.data
 
         dt = datetime.now()
-        #dt = d.strftime("%Y-%m-%d %H:%M:%S")
-
-        exHeader = m.exHeader(g.user, 1, chosen_exercise)
+        print chosen_category
+        exHeader = m.exHeader(g.user, chosen_category, chosen_exercise)
         m.db.session.add(exHeader)
         m.db.session.commit()
-        #this is wrong fix just temp
         exH = m.exHeader.query.filter_by(userID = g.user).first()
         
-        #m.db.session.add(exH)
 
         exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
             request.form['weight'], dt)
@@ -187,6 +192,20 @@ def add_exercise():
 	return render_template('add.html')
 
 
+@app.route('/post', methods=['GET', 'POST'])
+def post_request():
+	
+	if session['logged_in'] == False:
+		abort(401)
+	else:
+		a = ''.join(c for c in request.form.values() if c not in "[']")
+
+		f = m.exLine.query.filter_by(submitted=a).all()
+
+	return render_template('test.html',
+		filter=f)
+
+
 def me():
 	"""
 	User summary info
@@ -201,14 +220,64 @@ def me():
 		#recent exercises
 		x = m.exLine.query.all()
 
+		for a in x:
+			print a.header.category
+
 	return render_template('me.html',
 		recent=x,
+		user=u
 		)
 
-def hashConvert(pwIn):
+def control():
 	"""
-	Handle creating/reading salt/hash of pws
+	User can change settings
 	"""
 
-	salt = '1337h4x0rz'
-	return hashlib.md5(salt + pwIn).hexdigest()
+	if request.method == 'POST':
+		print 'post here'
+		u = m.user.query.filter_by(id=g.user).first()
+		pwcurrent = pw_fetch(u.email)
+		pwhash = pw_hash(request.form['currentpw'])
+
+		if pwhash == pwcurrent[0]:
+			user = m.user.query.filter_by(id = g.user)\
+				.filter_by(password = pwcurrent[0])\
+				.filter_by(salt = pwcurrent[1]).first() 
+		else:
+			flash("Invalid current password")
+			redirect('control.html')
+
+	return render_template('control.html')
+
+
+def pw_salt():
+	"""
+	Handle creating salt
+	"""
+
+	salt = os.urandom(16).encode('base_64')
+
+	return salt
+
+def pw_hash(pwIn):
+	"""
+	Handle creating hash
+	"""
+
+	hash = hashlib.md5(pwIn).hexdigest()
+
+	return hash
+
+def pw_fetch(emailIn):
+	"""
+	Fetch pw
+	"""
+
+	user = m.user.query.filter_by(email=emailIn).first()
+	
+	credList = []
+	credList.append(user.password)
+	credList.append(user.salt)
+
+	return credList
+

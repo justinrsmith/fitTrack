@@ -1,56 +1,44 @@
-w<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>fitTrack - Login</title>
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-	<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
-<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
-</head>
+{% extends 'base.html' %}
 
-<body>
-<div class="top_bar"></div>
+{% block content %}
 
-<div id="login_container">
-
-	<form class="login_area" action="{{ url_for('login') }}" method=post class=track>
-			
-		<div class="field_holder">
-			<input class="field" type="text" placeholder="Email" name = email id = "email">
-		</div>
-                    
-		<div class="field_holder">
-			<input class="field" type = "password" placeholder="Password" name = password>
-		</div>
-        <a class="fp" href="#link">FORGOT PASSWORD</a>
-                    
-		<div class="submit_holder">
-		<button type = "submit" class = "btn">SIGN IN</button>
-		</div>
-			
-	</form>
-        
-	<div id="create_account_container">
+<div class="row">
+	<div class="col-8">
+	<h1> </h1>
+		<form class="login_area" action="{{ url_for('login') }}" method=post class=track>
+				
+			<div class="field_holder">
+				<input class="field" type="text" placeholder="Email" name = email id = "email">
+			</div>
+	                    
+			<div class="field_holder">
+				<input class="field" type = "password" placeholder="Password" name = password>
+			</div>
+	        <a class="fp" href="#link">FORGOT PASSWORD</a>
+	                    
+			<div class="submit_holder">
+			<button type = "submit" class = "btn">SIGN IN</button>
+			</div>				
+		</form>
+	</div>
+	<div class="col-4">
 		<h1>NEED AN ACCOUNT ?</h1>
-        <p>New to fitTrack? Simply go to our 
-        <a class="blue" href="{{ url_for('create') }}">
-        create an account</a> page to get started.</p>
-    </div>
-        
-	<div id="create-account">
-		<a href="{{ url_for('create') }}"><button class ="btn">CREATE ACCOUNT</button></a>
+	    <p>New to fitTrack? Simply go to our 
+	    <a class="blue" href="{{ url_for('create') }}">
+	        create an account</a> page to get started.</p>
+	        
+		<div id="create-account">
+			<a href="{{ url_for('create') }}"><button class ="btn">CREATE ACCOUNT</button></a>
+		</div>
+	</div>
+</div>
+	<div id="footer">
+		<p id="copyright">&copy; 2013 fitTrack | Version 0.01</p>
+		<p id="links">
+	    <a href="https://github.com/justinrsmith/fitTrack">GitHub</a>
+	    </p>
 	</div>
 
-</div><!--Close Login Container-->
-
-<div id="footer">
-	<p id="copyright">&copy; 2013 fitTrack | Version 0.01</p>
-	<p id="links">
-    <a href="https://github.com/justinrsmith/fitTrack">GitHub</a>
-    </p>
-</div>
 
 
-
-</body>
-</html>
+{% endblock %}
