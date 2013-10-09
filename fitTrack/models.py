@@ -72,39 +72,18 @@ class exercise(db.Model):
 
     def __repr__(self):
         return self.name
-
-
-class exHeader(db.Model):
-
-    __tablename__ = 'exHeader'
-    id = db.Column(db.Integer(), primary_key=True)
-    userID = db.Column(db.Integer())
-    categoryID = db.Column(db.Integer(), db.ForeignKey(category.id))
-    exerciseID = db.Column(db.Integer(), db.ForeignKey(exercise.id))
-    category = relationship('category')
-    exercise = relationship('exercise')
-    
-    def __init__(self, userID, categoryID, exerciseID):
-
-        self.userID = userID
-        self.categoryID = categoryID
-        self.exerciseID = exerciseID
-
-    def __repr__(self):
-
-        return str(self.id)
-
+        
 
 class exLine(db.Model):
 
     __tablename__ = 'exLine'
     id = db.Column(db.Integer(), primary_key=True)
-    exHeaderID = db.Column(db.Integer(), db.ForeignKey(exHeader.id))
+    exHeaderID = db.Column(db.Integer())#, db.ForeignKey(exHeader.id))
     reps = db.Column(db.Integer())
     sets = db.Column(db.Integer())
     weight = db.Column(db.Integer())
-    submitted = db.Column(db.Date())
-    header = relationship('exHeader')
+    #submitted = db.Column(db.Date())
+    #header = relationship('exHeader')
 
     def __init__(self, exHeaderID, reps, sets, weight, submitted):
 
@@ -117,6 +96,29 @@ class exLine(db.Model):
     def __repr__(self):
 
         return str(self.exHeaderID)
+
+class exHeader(db.Model):
+
+    __tablename__ = 'exHeader'
+    id = db.Column(db.Integer(), primary_key=True)
+    id2 = db.Column(db.Integer(), db.ForeignKey(exLine.exHeaderID))
+    userID = db.Column(db.Integer())
+    categoryID = db.Column(db.Integer(), db.ForeignKey(category.id))
+    exerciseID = db.Column(db.Integer(), db.ForeignKey(exercise.id))
+    submitted = db.Column(db.Date())
+    category = relationship('category')
+    exercise = relationship('exercise')
+    line = relationship('exLine', primaryjoin='exHeader.id2==exLine.exHeaderID')
+    
+    def __init__(self, userID, categoryID, exerciseID):
+
+        self.userID = userID
+        self.categoryID = categoryID
+        self.exerciseID = exerciseID
+
+    def __repr__(self):
+
+        return str(self.id)
 
 
 

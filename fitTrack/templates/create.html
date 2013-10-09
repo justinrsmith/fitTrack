@@ -1,19 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>fitTrack - Login</title>
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-	<link href="../static/css/normal.css" rel="stylesheet" type="text/css" media="screen, projection" />
-	<link href="../static/css/responsive.css" rel="stylesheet" type="text/css" media="screen, projection" />
-</head>
-
+{% extends 'base.html' %}
+{% block content %}
 <body>
 <div class="top_bar"></div>
 
 <div id="signup_container">
 
-	<form class="signup_area" action="{{ url_for('create') }}" method=post class=track>
+	<form class="form-horizontal" action="{{ url_for('create') }}" method=post class=track>
 
 		<div class="field_holder">
         	<label>Email</label>
@@ -47,7 +39,7 @@
         
         <div class="field_holder">
         	<label>Confirm Password</label>
-			<input class="field" type = "password2" placeholder="Password2" name = password2 id="password2">
+			<input class="field" type = "password" placeholder="Password2" name = "password2" id="password2">
 		</div>
                     
 		<div class="submit_holder">
@@ -70,4 +62,4 @@
 
 
 </body>
-</html>
+{% endblock %}

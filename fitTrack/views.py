@@ -4,7 +4,7 @@ import models as m
 import json
 from datetime import datetime
 import hashlib
-from fitTrack.forms import WorkoutChoiceForm
+from fitTrack.forms import WorkoutChoiceForm, HistoryChoiceForm
 from flask.views import MethodView
 from flask.ext.mail import Mail
 from flask.ext.mail import Message
@@ -44,9 +44,7 @@ def login():
 	
 	if request.method == 'POST':
 
-		pw = pw_fetch(request.form['password'])
-		print pw[0]
-		print pw[1]
+		pw = pw_fetch(request.form['email'])
 		user = m.user.query.filter_by(email = request.form['email'])\
 		.filter_by(password = pw[0])\
 		.filter_by(salt = pw[1]).first() 
@@ -87,17 +85,6 @@ def create():
 				request.form['age'], request.form['location'])
 			m.db.session.add(newUser)
 			m.db.session.commit()
-
-
-		#mail = Mail(app)
-		#mail.init_app(app)
-		
-		#msg = Message('Hello',
-		#	sender='justinrsmith88@gmail.com',
-		#	recipients=['justinrsmith88@gmail.com'])
-		#msg.body='body'
-		#mail.send(msg)
-		#return 'sent'
 
 	return render_template('create.html')
 
@@ -198,13 +185,24 @@ def post_request():
 	if session['logged_in'] == False:
 		abort(401)
 	else:
+		print 'hi'
 		a = ''.join(c for c in request.form.values() if c not in "[']")
 
-		f = m.exLine.query.filter_by(submitted=a).all()
-
+		#f = m.exLine.query.filter_by(submitted=a).all()
+		f = m.exLine.query.all()
+		for x in a:
+			print x
+		
 	return render_template('test.html',
 		filter=f)
 
+@app.route('/me2')
+def me2():
+		print 'im here'
+		category2 = request.args.get('category')
+		result = category2
+		print result
+		return 'hi'
 
 def me():
 	"""
@@ -215,17 +213,48 @@ def me():
 		abort(401)
 	else:
 		#user info
+
 		u = m.user.query.filter_by(id=g.user)
 
 		#recent exercises
-		x = m.exLine.query.all()
+		r = m.exHeader.query.all()
+		CATEGORY_LIST = []
+		a = m.category.query.filter_by(userID=2).all()
+		for x in a:
+			CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
-		for a in x:
-			print a.header.category
+		form = HistoryChoiceForm(request.form)
+		form.category.choices = [('', '--- Select One ---')] + [
+			(x['categoryID'], x['name']) for x in CATEGORY_LIST]
+		chosen_category = None
+		chosen_exercise = None
+		context = {
+	        'form': form,
+	        'chosen_category': chosen_category,
+	        'chosen_exercise': chosen_exercise,
+    	}
+		
+		if request.method == 'POST':
+			chosen_category = form.category.data
+			chosen_exercise = form.exercise.data
+
+			dt = datetime.now()
+
+			selectedrecent = m.exHeader.query.filter_by(\
+				categoryID=chosen_category).filter_by(\
+				exerciseID=chosen_exercise).order_by(m.exHeader.submitted.desc()).all()
+
+			return render_template('me.html',
+				recent=r,
+				user=u,
+				selectedrecent=selectedrecent,
+				**context
+				)
 
 	return render_template('me.html',
-		recent=x,
-		user=u
+		recent=r,
+		user=u,
+		**context
 		)
 
 def control():
@@ -234,17 +263,34 @@ def control():
 	"""
 
 	if request.method == 'POST':
-		print 'post here'
 		u = m.user.query.filter_by(id=g.user).first()
-		pwcurrent = pw_fetch(u.email)
-		pwhash = pw_hash(request.form['currentpw'])
+		if 'updatepw' in request.form:
+			print 'updatepw'			
+			pwcurrent = pw_fetch(u.email)
+			pwhash = pw_hash(request.form['currentpw'])
 
-		if pwhash == pwcurrent[0]:
+			if pwhash == pwcurrent[0]:
+				user = m.user.query.filter_by(id = g.user)\
+					.filter_by(password = pwcurrent[0])\
+					.filter_by(salt = pwcurrent[1]).first() 
+				newpw = pw_hash(request.form['newpw'])
+				user.password = newpw
+				m.db.session.add(user)
+				m.db.session.commit()
+			else:
+				flash('Invalid current password')
+				redirect('control.html')
+		if 'newemail' in request.form:
+			print 'newemail'
+			pwcurrent = pw_fetch(u.email)
 			user = m.user.query.filter_by(id = g.user)\
-				.filter_by(password = pwcurrent[0])\
-				.filter_by(salt = pwcurrent[1]).first() 
+					.filter_by(password = pwcurrent[0])\
+					.filter_by(salt = pwcurrent[1]).first() 
+			user.email = request.form['newemail']
+			m.db.session.add(user)
+			m.db.session.commit()
 		else:
-			flash("Invalid current password")
+			flash('Invalid current password')
 			redirect('control.html')
 
 	return render_template('control.html')

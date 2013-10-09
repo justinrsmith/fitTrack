@@ -13,39 +13,65 @@ if(pass1.value==pass2.value){
  return true;
 }
 else { alert("Password do not match."); return false;}
-    
-
 }
 </script>
 {% endblock %}
 
 {% block content %}
+
+<div class="container">
+<h3>Account Management</h3>
 <div class="row">
-	<div class="span3">
-	<h3>Account Management</h3>
-	<form class="form-horizontal" method=post>
-  		<div class="control-group">
-  			<label class="control-label" for="currentpw">Current Password</label>
-  		<div class="controls">
-  			<input type="password" id="currentpw" name="currentpw">
-  		</div>
-  		</div>
-  		<div class="control-group">
-  			<label class="control-label" for="newpw">New Password</label>
-  		<div class="controls">
-  			<input type="password" id="newpw" name="newpw">
-  		</div>
-  		</div>
-  		  	<div class="control-group">
-  			<label class="control-label" for="verifypw">Verify Password</label>
-  		<div class="controls">
-  			<input type="password" id="verifypw" name="verifypw">
-  		</div>
-  		</div>
-  		<br>
-  		<button type="submit" class="btn" onClick="return pwcheck();">Update Password</button>
-  	</form>
+
+	<div class="col-md-3">
+		<h5>Update Email Preferences</h5>
+		<form class="form-horizontal" method=post name='email'>
+			<div class="control-group">
+	  			<label class="control-label" for="newemail">New Email</label>
+	  		<div class="controls">
+	  			<input type="password" id="newemail" name="newemail">
+	  		</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="newemail">Password</label>
+	  		<div class="controls">
+	  			<input type="password" id="pw" name="pw">
+	  		</div>
+	  		</div>
+	  		<br>
+	  		<button type="submit" class="btn" name="newemail">Update Email</button>
+	  	</form>
+	  	<br>
+	  	<form>
+	  		<button type="submit" class="btn">Delete Account</button>
+	  	</form>
 	</div>
+	<div class="col-md-9">
+		<h5>Update Password</h5>
+		<form class="form-horizontal" method=post name="password">
+	  		<div class="control-group">
+	  			<label class="control-label" for="currentpw">Current Password</label>
+	  		<div class="controls">
+	  			<input type="password" id="currentpw" name="currentpw">
+	  		</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="newpw">New Password</label>
+	  		<div class="controls">
+	  			<input type="password" id="newpw" name="newpw">
+	  		</div>
+	  		</div>
+	  		<div class="control-group">
+	  			<label class="control-label" for="verifypw">Verify Password</label>
+	  		<div class="controls">
+	  			<input type="password" id="verifypw" name="verifypw">
+	  		</div>
+	  		</div>
+	  		<br>
+	  		<button type="submit" class="btn" onClick="return pwcheck();" name="updatepw">Update Password</button>
+	  	</form>
+	</div>
+</div>
 </div>
 {% endblock %}
 

@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-8">
+	<div class="col-md-6">
 	<h1> </h1>
 		<form class="login_area" action="{{ url_for('login') }}" method=post class=track>
 				
@@ -21,7 +21,7 @@
 			</div>				
 		</form>
 	</div>
-	<div class="col-4">
+	<div class="col-md-6">
 		<h1>NEED AN ACCOUNT ?</h1>
 	    <p>New to fitTrack? Simply go to our 
 	    <a class="blue" href="{{ url_for('create') }}">
@@ -32,12 +32,10 @@
 		</div>
 	</div>
 </div>
-	<div id="footer">
+	<div class="navbar navbar-fixed-bottom">
 		<p id="copyright">&copy; 2013 fitTrack | Version 0.01</p>
 		<p id="links">
-	    <a href="https://github.com/justinrsmith/fitTrack">GitHub</a>
-	    </p>
-	</div>
+	    <a href="https://github.com/justinrsmith/fitTrack">GitHub</a></div>
 
 
 

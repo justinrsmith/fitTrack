@@ -6,7 +6,7 @@
 
 <div class="row">       
 
-	<div class="col-8">
+	<div class="col-md-8">
 		<h3>Your Recent Activity</h3>
 		<table class="table table-hover" id="recent_activity">
 			<th>Category</th>
@@ -14,19 +14,21 @@
 			<th>Sets</th>
 			<th>Reps</th>
 			<th>Weight</th>
+			<th>Date</th>
 			{% if recent %}
 				{% for r in recent %}
-					<tr><td>{{ r.header.category.name }}</td>
-					<td>{{ r.header.exercise.name }}</td>
-					<td>{{ r.sets }}</td>
-					<td>{{ r.reps }}</td>
-					<td>{{ r.weight }}</td>
+					<tr><td>{{ r.category.name }}</td>
+					<td>{{ r.exercise.name }}</td>
+					<td>{{ r.line.sets }}</td>
+					<td>{{ r.line.reps }}</td>
+					<td>{{ r.line.weight }}</td>
+					<td>{{ r.submitted }}</td>
 					</td></tr>
 				{% endfor %}
 			{% endif %}
 		</table>
 	</div>
-	<div class="col-4">
+	<div class="col-md-4">
 		<h3>User</h3>
 		<table class="table table-hover">
 		{% if user %}
@@ -59,33 +61,55 @@
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-<p>Put something in this box to send it to the server with a post request
-<input type="text" id="dp1" name="user-input"> <button>Go</button>
-<p>
 
-<script>
-	$('#dp1').datepicker({
-  		format: 'mm-dd-yyyy'
-	});
-    $('button').on('click', function(){
-        var button = $(this)
-        var data = {
-            // this is just an object that sets up what key/value pairs
-            // to send to the server. Notice it can be totally different
-            // than what's in the html markup.
-            user_data: $('input').val()
-        }
+<!--<input type="text" id="category" name="category"> -->
+<form class="form-inline" action="" method=post>
+ 	{{ form.hidden_tag() }}
+	<div class="form-group">
+		<label class-"control-label" for="category">Category</label>
+		<div class="controls">
+			<ul style="margin: 0; padding: 0;">
+			{{ form.category(id='category_select') }}
+			</ul>				
+		</div>
+	</div>
+	<div class="form-group">
+		<label class-"control-label" for="exercise">Exercise</label>
+		<div class="controls">
+			<ul style="margin: 0; padding: 0;">
+			{{ form.exercise(id='exercise_select') }}
+			</ul>
+		</div>
+	</div>
+	<button type="submit" class="btn btn-default">Submit</button>
+</form>
 
-        $.post('/post', data, function(response){
-            button.after(response)
-        })
-        .error(function(r){
-            // post requests obscure errors, so it's a good idea
-            // to attach an error handling method that logs the
-            // failure to the console. You can inpsect error messages
-            // in the response's responseText attribute
-            console.log(r)
-        })
-    })
-</script>
+{% if selectedrecent is defined %}
+<div class="col-md-8">
+<h3>Your Selected Activity</h3>
+		<table class="table table-hover" id="recent_activity">
+			<th>Category</th>
+			<th>Exercise</th>
+			<th>Sets</th>
+			<th>Reps</th>
+			<th>Weight</th>
+			<th>Date</th>
+			{% if selectedrecent %}
+				{% for t in selectedrecent %}
+					<tr><td>{{ t.categoryID }}</td>
+					<td>{{ t.exerciseID }}</td>
+					<td>{{ t.line.sets }}</td>
+					<td>{{ t.line.reps }}</td>
+					<td>{{ t.line.weight }}</td>
+					<td>{{ t.submitted }}</td>
+					</td></tr>
+				{% endfor %}
+			{% endif %}
+		</table>
+</div>
+{% endif %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="/static/track.js"></script>
+
 {% endblock %}
