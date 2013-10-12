@@ -37,7 +37,8 @@ class user(db.Model):
 
     def __repr__(self):
 
-        return id
+        return self.email + self.lastName + ', ' \
+            + self.firstName
 
 
 class category(db.Model):

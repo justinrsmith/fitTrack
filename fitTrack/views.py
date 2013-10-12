@@ -9,6 +9,7 @@ from flask.views import MethodView
 from flask.ext.mail import Mail
 from flask.ext.mail import Message
 import os
+import unicodedata
 
 
 def auth(form):
@@ -44,22 +45,31 @@ def login():
 	
 	if request.method == 'POST':
 
-		pw = pw_fetch(request.form['email'])
-		user = m.user.query.filter_by(email = request.form['email'])\
-		.filter_by(password = pw[0])\
-		.filter_by(salt = pw[1]).first() 
-
-		if user is None:
+		"""
+		This call and fucntion is so bad I should be ashamed. FIX
+		"""
+		a = request.form['email']
+		a = unicodedata.normalize('NFKD', a).encode('ascii','ignore')
+		pw = pw_fetch(a)
+		if pw is not None:
+			user_password = pw.pop(0)
+			user_salt = pw.pop(0)
+			user = m.user.query.filter_by(email = a)\
+				.filter_by(password = user_password)\
+				.filter_by(salt = user_salt).first()
+			session['logged_in'] = True
+			session['user_id'] = user.id
+			flash('You were logged in') 
+			redirect(url_for('track'))
+		else:
 			error = 'Invalid Email'
 			flash('Invalid credentials', error)
 			session['logged_in'] = False
-		else:
-			session['logged_in'] = True
-			session['user_id'] = user.id
-			flash('You were logged in')
+		"""
+		AWFUL, honestly pathetic
+		^^^^^
+		"""
 
-			return redirect(url_for('track'))
-	
 	return render_template('login.html')
 
 
@@ -95,7 +105,6 @@ def home():
     if session['logged_in'] == False:
     	abort(404)
     else:
-   		print g.user
 		return render_template('home.html')
 
 
@@ -196,13 +205,6 @@ def post_request():
 	return render_template('test.html',
 		filter=f)
 
-@app.route('/me2')
-def me2():
-		print 'im here'
-		category2 = request.args.get('category')
-		result = category2
-		print result
-		return 'hi'
 
 def me():
 	"""
@@ -256,6 +258,7 @@ def me():
 		user=u,
 		**context
 		)
+
 
 def control():
 	"""
@@ -314,16 +317,21 @@ def pw_hash(pwIn):
 
 	return hash
 
-def pw_fetch(emailIn):
+def pw_fetch(email_in):
 	"""
 	Fetch pw
 	"""
-
-	user = m.user.query.filter_by(email=emailIn).first()
 	
-	credList = []
-	credList.append(user.password)
-	credList.append(user.salt)
+	user = m.user.query.filter_by(email=email_in).first()
 
-	return credList
+	if not user:
+		#flash('Account does not exist. Please create an account.')
+		return None
+	else:
+		credList = []
+		credList.append(user.password)
+		credList.append(user.salt)
+		print credList
+
+		return credList
 
