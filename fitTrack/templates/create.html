@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-<body>
-<div class="top_bar"></div>
-
-<div id="signup_container">
 
 	<form class="form-horizontal" action="{{ url_for('create') }}" method=post class=track>
 
@@ -39,7 +35,7 @@
         
         <div class="field_holder">
         	<label>Confirm Password</label>
-			<input class="field" type = "password" placeholder="Password2" name = "password2" id="password2">
+			<input class="field" type = "password" placeholder="Password2" name = password2 id="password2">
 		</div>
                     
 		<div class="submit_holder">
@@ -49,17 +45,4 @@
 	</form>
 
         
-
-</div><!--Close Signup Container-->
-
-<div id="footer">
-	<p id="copyright">&copy; 2013 fitTrack | Version 0.01</p>
-	<p id="links">
-    <a href="https://github.com/justinrsmith/fitTrack">GitHub</a>
-    </p>
-</div>
-
-
-
-</body>
 {% endblock %}

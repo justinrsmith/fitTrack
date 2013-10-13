@@ -28,7 +28,7 @@ def auth(form):
 def something():
 
 	login_url = url_for('login')
-	
+
 	if request.path == login_url:
 		return
 	elif not session.get('logged_in', False):
@@ -42,7 +42,7 @@ def login():
 	"""Handle logging in of users"""
 
 	session['logged_in'] = False
-	
+
 	if request.method == 'POST':
 
 		"""
@@ -182,7 +182,7 @@ def add_exercise():
 		newExercise = m.exercise(request.form['exercise'], g.user, newCategory.id)
 		m.db.session.add(newExercise)
 		m.db.session.commit()
-		
+
 		print newCategory.id
 
 	return render_template('add.html')
@@ -190,7 +190,7 @@ def add_exercise():
 
 @app.route('/post', methods=['GET', 'POST'])
 def post_request():
-	
+
 	if session['logged_in'] == False:
 		abort(401)
 	else:
@@ -201,7 +201,7 @@ def post_request():
 		f = m.exLine.query.all()
 		for x in a:
 			print x
-		
+
 	return render_template('test.html',
 		filter=f)
 
@@ -235,7 +235,7 @@ def me():
 	        'chosen_category': chosen_category,
 	        'chosen_exercise': chosen_exercise,
     	}
-		
+
 		if request.method == 'POST':
 			chosen_category = form.category.data
 			chosen_exercise = form.exercise.data
@@ -321,7 +321,7 @@ def pw_fetch(email_in):
 	"""
 	Fetch pw
 	"""
-	
+
 	user = m.user.query.filter_by(email=email_in).first()
 
 	if not user:
@@ -334,4 +334,3 @@ def pw_fetch(email_in):
 		print credList
 
 		return credList
-

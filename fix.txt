@@ -1,0 +1,8 @@
+confirm password not hidden
+after login created redirect to logged in page
+email
+exercise disappears after submission
+category only show once
+recent activity
+confirm pw for new email
+any pw is working
