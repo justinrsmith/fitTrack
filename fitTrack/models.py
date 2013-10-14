@@ -109,13 +109,16 @@ class exHeader(db.Model):
     submitted = db.Column(db.Date())
     category = relationship('category')
     exercise = relationship('exercise')
-    line = relationship('exLine', primaryjoin='exHeader.id2==exLine.exHeaderID')
+    line = relationship('exLine')
+    #line = relationship('exLine', primaryjoin='exHeader.id2==exLine.exHeaderID')
     
-    def __init__(self, userID, categoryID, exerciseID):
+    def __init__(self, userID, categoryID, exerciseID, submitted):
 
+        self.id2 = self.id
         self.userID = userID
         self.categoryID = categoryID
         self.exerciseID = exerciseID
+        self.submitted = submitted
 
     def __repr__(self):
 

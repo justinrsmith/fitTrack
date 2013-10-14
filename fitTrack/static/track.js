@@ -7,7 +7,7 @@ $("#category_select").change(function() {
     });
     request.done(function(data){
         var option_list = [["", "--- Select One ---"]].concat(data);
-
+        alert(option_list);
         for (var i = 0; i < option_list.length; i++) {
             $("#exercise_select").append(
                 $("<option></option>").attr(

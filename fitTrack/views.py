@@ -60,7 +60,7 @@ def login():
 			session['logged_in'] = True
 			session['user_id'] = user.id
 			flash('You were logged in') 
-			redirect(url_for('track'))
+			return redirect(url_for('track'))
 		else:
 			error = 'Invalid Email'
 			flash('Invalid credentials', error)
@@ -115,7 +115,7 @@ def track():
     """
 
     CATEGORY_LIST = []
-    a = m.category.query.filter_by(userID=2).all()
+    a = m.category.query.filter_by(userID=g.user).all()
     for x in a:
         CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
@@ -130,12 +130,14 @@ def track():
         chosen_exercise = form.exercise.data
 
         dt = datetime.now()
-        print chosen_category
-        exHeader = m.exHeader(g.user, chosen_category, chosen_exercise)
+
+        exHeader = m.exHeader(g.user, chosen_category, chosen_exercise,
+        	dt)
         m.db.session.add(exHeader)
         m.db.session.commit()
-        exH = m.exHeader.query.filter_by(userID = g.user).first()
-        
+        exH = m.exHeader.query.filter_by(userID = g.user).order_by(
+        	m.exHeader.id.desc()).first()
+        exH.id2 = exH.id
 
         exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
             request.form['weight'], dt)
@@ -165,6 +167,7 @@ class ModelsAPI(MethodView):
         data = [
             (x['exerciseID'], x['name']) for x in EXERCISE_LIST
             if x['categoryID'] == categoryID]
+
         response = make_response(json.dumps(data))
         response.content_type = 'application/json'
         return response
@@ -215,11 +218,11 @@ def me():
 		abort(401)
 	else:
 		#user info
-
 		u = m.user.query.filter_by(id=g.user)
 
 		#recent exercises
 		r = m.exHeader.query.all()
+
 		CATEGORY_LIST = []
 		a = m.category.query.filter_by(userID=2).all()
 		for x in a:

@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block head %}
-<link href="../static/css/bootstrap-datepicker.css" rel="stylesheet" media="screen">
-{% endblock %}
+
 {% block content %}
 
 <div class="row">       
@@ -18,7 +16,7 @@
 			{% if recent %}
 				{% for r in recent %}
 					<tr><td>{{ r.category.name }}</td>
-					<td>{{ r.exercise.name }}</td>
+					<td>{{ r.exercise. 	name }}</td>
 					<td>{{ r.line.sets }}</td>
 					<td>{{ r.line.reps }}</td>
 					<td>{{ r.line.weight }}</td>
