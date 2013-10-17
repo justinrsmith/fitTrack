@@ -95,6 +95,7 @@ def create():
 				request.form['age'], request.form['location'])
 			m.db.session.add(newUser)
 			m.db.session.commit()
+			redirect(url_for('track'))
 
 	return render_template('create.html')
 
@@ -113,44 +114,46 @@ def track():
     Create dropdowns
     User submits their data
     """
+    if session['logged_in'] == False:
+        abort(401)
+    else:
+        CATEGORY_LIST = []
+        a = m.category.query.filter_by(userID=g.user).all()
+        for x in a:
+            CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
-    CATEGORY_LIST = []
-    a = m.category.query.filter_by(userID=g.user).all()
-    for x in a:
-        CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
+        form = WorkoutChoiceForm(request.form)
+        form.category.choices = [('', '--- Select One ---')] + [
+            (x['categoryID'], x['name']) for x in CATEGORY_LIST]
+        chosen_category = None
+        chosen_exercise = None
 
-    form = WorkoutChoiceForm(request.form)
-    form.category.choices = [('', '--- Select One ---')] + [
-        (x['categoryID'], x['name']) for x in CATEGORY_LIST]
-    chosen_category = None
-    chosen_exercise = None
+        if request.method == 'POST':
+            chosen_category = form.category.data
+            chosen_exercise = form.exercise.data
 
-    if request.method == 'POST':
-        chosen_category = form.category.data
-        chosen_exercise = form.exercise.data
+            dt = datetime.now()
 
-        dt = datetime.now()
+            exHeader = m.exHeader(g.user, chosen_category, chosen_exercise,
+                dt)
+            m.db.session.add(exHeader)
+            m.db.session.commit()
+            exH = m.exHeader.query.filter_by(userID = g.user).order_by(
+                m.exHeader.id.desc()).first()
+            exH.id2 = exH.id
 
-        exHeader = m.exHeader(g.user, chosen_category, chosen_exercise,
-        	dt)
-        m.db.session.add(exHeader)
-        m.db.session.commit()
-        exH = m.exHeader.query.filter_by(userID = g.user).order_by(
-        	m.exHeader.id.desc()).first()
-        exH.id2 = exH.id
+            exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
+                request.form['weight'], dt)
 
-        exL = m.exLine(exH.id, request.form['reps'], request.form['sets'],
-            request.form['weight'], dt)
+            m.db.session.add(exL)
+            m.db.session.commit()
 
-        m.db.session.add(exL)
-        m.db.session.commit()
-
-    context = {
-        'form': form,
-        'chosen_category': chosen_category,
-        'chosen_exercise': chosen_exercise,
-    }
-    return render_template('track.html', **context)
+        context = {
+            'form': form,
+            'chosen_category': chosen_category,
+            'chosen_exercise': chosen_exercise,
+        }
+        return render_template('track.html', **context)
 
 
 class ModelsAPI(MethodView):
@@ -221,10 +224,11 @@ def me():
 		u = m.user.query.filter_by(id=g.user)
 
 		#recent exercises
-		r = m.exHeader.query.all()
+		r = m.exHeader.query.filter_by(userID=g.user).order_by(
+			m.exHeader.submitted.desc()).all()
 
 		CATEGORY_LIST = []
-		a = m.category.query.filter_by(userID=2).all()
+		a = m.category.query.filter_by(userID=g.user).all()
 		for x in a:
 			CATEGORY_LIST.append({'categoryID': x.id, 'name': x.name})
 
