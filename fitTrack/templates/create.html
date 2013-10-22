@@ -3,43 +3,44 @@
 
 	<form class="form-horizontal" action="{{ url_for('create') }}" method=post class=track>
 
-		<div class="field_holder">
-        	<label>Email</label>
+		<div class="form-group">
+        	<label class="col-lg-4 control-label">Email:</label></label>
 			<input class="field" type="text" placeholder="Email" name = "email" id="email">
 		</div>
 			
-		<div class="field_holder">
-        	<label>First Name</label>
+		<div class="form-group">
+        	<label class="col-lg-4 control-label">First Name:</label></label>
 			<input class="field" type="text" placeholder="First Name" name = "firstName" id="firstName">
 		</div>
                     
-		<div class="field_holder">
-        	<label>Last Name</label>
+		<div class="form-group">
+        	<label class="col-lg-4 control-label">Last Name:</label></label>
 			<input class="field" type = "text" placeholder="Last Name" name = "lastName" id="lastName">
 		</div>
         
-        <div class="field_holder">
-        	<label>Age</label>
+        <div class="form-group">
+        	<label class="col-lg-4 control-label">Age:</label></label>
 			<input class="field" type = "text" placeholder="Age" name = "age" id="age">
 		</div>
         
-        <div class="field_holder">
-        	<label>Location</label>
+        <div class="form-group">
+        	<label class="col-lg-4 control-label">City, State:</label></label>
 			<input class="field" type = "text" placeholder="City, State" name = "location" id="location">
 		</div>
         
-        <div class="field_holder">
-        	<label>Password</label>
+        <div class="form-group">
+        	<label class="col-lg-4 control-label">Password:</label></label>
 			<input class="field" type = "password" placeholder="Password" name = "password" id="password">
 		</div>
         
-        <div class="field_holder">
-        	<label>Confirm Password</label>
+        <div class="form-group">
+        	<label class="col-lg-4 control-label">Password:</label>
 			<input class="field" type = "password" placeholder="Password2" name = password2 id="password2">
 		</div>
-                    
+              <div class="col-lg-offset-6 col-lg-10">
+                                        <button id = "submitstudent" type="submit" class="btn btn-default">Submit</button>
+                                 </div>      
 		<div class="submit_holder">
-		<button type="submit" class="btn">Sign Up</button>
 		</div>
 			
 	</form>

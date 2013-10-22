@@ -3,18 +3,15 @@
  <head>
      
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-      <script type="text/javascript" charset="utf-8" src="../static/DataTables/media/js/jquery.js"></script>
-      <script type="text/javascript" charset="utf-8" src="../static/DataTables/media/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8" src="../static/DataTables/media/js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../static/DataTables/media/js/jquery.dataTables.js"></script>
          
-        <script type="text/javascript">    
-            $(document).ready( function() {
-               $('#table_id').dataTable();
-            });
-                        $(document).ready( function() {
-               $('#recent_activity').dataTable();
-            });
-        </script>
-         <style type="text/css" title="currentStyle">
+<script type="text/javascript">    
+  $(document).ready( function() {
+    $('#table_id').dataTable();
+  });
+</script>
+<style type="text/css" title="currentStyle">
     @import "../static/DataTables/media/css/demo_table.css";
 </style>
     </head>
@@ -22,34 +19,38 @@
     <body>
     <div class="row">       
 
+
+  {% if recent is defined %}
   <div class="col-md-8">
-    <h3>Your Recent Activity</h3>
-    <table class="display" id="recent_activity">
-    <thead>
-    <tr>
-      <th>Category</th>
-      <th>Exercise</th>
-      <th>Sets</th>
-      <th>Reps</th>
-      <th>Weight</th>
-      <th>Date</th>
-      </tr>
+  <h3>Your Recent Activity</h3>
+    <table class="display" id="table_id">
+      <thead>
+        <tr>
+        <th>Category</th>
+        <th>Exercise</th>
+        <th>Sets</th>
+        <th>Reps</th>
+        <th>Weight</th>
+        <th>Date</th>
+        </tr>
       </thead>
       <tbody>
-      {% if recent %}
-        {% for r in recent %}
-          <tr><td>{{ r.category.name }}</td>
-          <td>{{ r.exercise.name }}</td>
-          <td>{{ r.line.sets }}</td>
-          <td>{{ r.line.reps }}</td>
-          <td>{{ r.line.weight }}</td>
-          <td>{{ r.submitted }}</td>
-          </td></tr>
-        {% endfor %}
-      {% endif %}
+        {% if recent %}
+          {% for r in recent %}
+            <tr><td>{{ r.category.name }}</td>
+            <td>{{ r.exercise.name }}</td>
+            <td>{{ r.line.sets }}</td>
+            <td>{{ r.line.reps }}</td>
+            <td>{{ r.line.weight }}</td>
+            <td>{{ r.submitted }}</td>
+            </td></tr>
+          {% endfor %}
+        {% endif %}
       </tbody>
     </table>
+        <br><br>
   </div>
+  {% endif %}
   <div class="col-md-4">
     <h3>User</h3>
     <table class="table table-striped">
@@ -78,63 +79,12 @@
         {% endfor %}
     {% endif %}
     </table>
-    
+
   </div>
 </div>
 
 
-<!--<input type="text" id="category" name="category"> -->
-<form class="form-inline" action="" method=post>
-  {{ form.hidden_tag() }}
-  <div class="form-group">
-    <label class-"control-label" for="category">Category</label>
-    <div class="controls">
-      <ul style="margin: 0; padding: 0;">
-      {{ form.category(id='category_select') }}
-      </ul>       
-    </div>
-  </div>
-  <div class="form-group">
-    <label class-"control-label" for="exercise">Exercise</label>
-    <div class="controls">
-      <ul style="margin: 0; padding: 0;">
-      {{ form.exercise(id='exercise_select') }}
-      </ul>
-    </div>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
 
-{% if selectedrecent is defined %}
-<div class="col-md-8">
-<h3>Your Selected Activity</h3>
-  <table class="display" id="table_id">
-    <thead>
-      <tr>
-      <th>Category</th>
-      <th>Exercise</th>
-      <th>Sets</th>
-      <th>Reps</th>
-      <th>Weight</th>
-      <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if selectedrecent %}
-        {% for t in selectedrecent %}
-          <tr><td>{{ t.category.name }}</td>
-          <td>{{ t.exercise.name }}</td>
-          <td>{{ t.line.sets }}</td>
-          <td>{{ t.line.reps }}</td>
-          <td>{{ t.line.weight }}</td>
-          <td>{{ t.submitted }}</td>
-          </td></tr>
-        {% endfor %}
-      {% endif %}
-    </tbody>
-  </table>
-</div>
-{% endif %}
 
 <script src="/static/track.js"></script>
 

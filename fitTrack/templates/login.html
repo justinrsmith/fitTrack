@@ -5,13 +5,15 @@
 <div class="row">
 	<div class="col-md-6">
 	<h1> </h1>
-		<form class="login_area" action="{{ url_for('login') }}" method=post class=track>
+		<form class="form-horizontal" action="{{ url_for('login') }}" method=post class=track>
 				
-			<div class="field_holder">
+			<div class="form-group">
+				<label for ="email" class="col-lg-4 control-label">Email</label>
 				<input class="field" type="text" placeholder="Email" name = email id = "email">
 			</div>
 	                    
-			<div class="field_holder">
+			<div class="form-group">
+				<label for ="password" class="col-lg-4 control-label">Password</label>
 				<input class="field" type = "password" placeholder="Password" name = password>
 			</div>
 	        <a class="fp" href="#link">FORGOT PASSWORD</a>

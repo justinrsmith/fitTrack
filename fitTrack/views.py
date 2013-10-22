@@ -89,24 +89,16 @@ def create():
 		exists = m.user.query.filter_by(email=request.form['email']).first()
 
 		if not exists:
+			print 'not exists'
 			newUser = m.user(request.form['email'], pw_hash(request.form['password']),
 				pw_salt(),
 				request.form['firstName'], request.form['lastName'],
 				request.form['age'], request.form['location'])
 			m.db.session.add(newUser)
 			m.db.session.commit()
-			redirect(url_for('track'))
+			return redirect(url_for('track'))
 
 	return render_template('create.html')
-
-
-def home():
-    """Home page"""
-
-    if session['logged_in'] == False:
-    	abort(404)
-    else:
-		return render_template('home.html')
 
 
 def track():
@@ -249,14 +241,9 @@ def me():
 
 			dt = datetime.now()
 
-			selectedrecent = m.exHeader.query.filter_by(\
-				categoryID=chosen_category).filter_by(\
-				exerciseID=chosen_exercise).order_by(m.exHeader.submitted.desc()).all()
-
 			return render_template('me.html',
 				recent=r,
 				user=u,
-				selectedrecent=selectedrecent,
 				**context
 				)
 
