@@ -29,5 +29,5 @@ app.config.update(
 app.secret_key = 'notsosecret'
 
 #from fitTrack import views
-import admin
+#import admin
 import urls

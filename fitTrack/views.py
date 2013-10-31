@@ -6,8 +6,6 @@ from datetime import datetime
 import hashlib
 from fitTrack.forms import WorkoutChoiceForm, HistoryChoiceForm
 from flask.views import MethodView
-from flask.ext.mail import Mail
-from flask.ext.mail import Message
 import os
 import unicodedata
 

@@ -1,4 +1,4 @@
-from flask.ext.wtf import Form, SelectField
+from wtforms import Form, SelectField
 
 
 class WorkoutChoiceForm(Form):

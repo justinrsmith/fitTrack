@@ -2,7 +2,7 @@ from fitTrack import app
 from flask import Flask, request, redirect
 from flask.ext.admin import Admin, BaseView, expose
 from flask.ext.admin.base import AdminIndexView
-from flask.ext.admin.contrib.sqlamodel import ModelView
+from flask.ext.admin.contrib.sqla import ModelView
 from flask.ext.admin.model import BaseModelView
 from flask.ext.admin.model.form import InlineFormAdmin
 from fitTrack import models as m
